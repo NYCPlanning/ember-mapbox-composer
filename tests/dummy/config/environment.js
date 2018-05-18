@@ -17,6 +17,13 @@ module.exports = function(environment) {
       }
     },
 
+    'mapbox-gl': {
+      accessToken: 'peanut-butter',
+      map: {
+        style: '//raw.githubusercontent.com/NYCPlanning/labs-gl-style/master/data/style.json',
+      },
+    },
+
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created

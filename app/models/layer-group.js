@@ -1,1 +1,1 @@
-export { default } from 'labs-maps/models/layer-group';
+export { default } from 'ember-labs-maps/models/layer-group';

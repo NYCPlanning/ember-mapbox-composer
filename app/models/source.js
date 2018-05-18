@@ -1,1 +1,1 @@
-export { default } from 'labs-maps/models/source';
+export { default } from 'ember-labs-maps/models/source';

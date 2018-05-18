@@ -1,6 +1,6 @@
 import Model from 'ember-data/model';
-import { attr, hasMany } from 'ember-decorators/data';
-import { mapBy } from 'ember-decorators/object/computed';
+import { attr, hasMany } from '@ember-decorators/data';
+import { mapBy } from '@ember-decorators/object/computed';
 import { computed } from '@ember-decorators/object';
 
 export default class LayerGroupModel extends Model {

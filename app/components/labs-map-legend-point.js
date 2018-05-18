@@ -1,1 +1,1 @@
-export { default } from 'labs-maps/components/labs-map-legend-point';
+export { default } from 'ember-labs-maps/components/labs-map-legend-point';

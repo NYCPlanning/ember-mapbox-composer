@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { argument } from '@ember-decorators/argument';
-import { tagName, classNames, attribute } from 'ember-decorators/component';
+import { tagName, classNames, attribute } from '@ember-decorators/component';
 import layout from '../templates/components/labs-map-legend-point';
 
 @tagName('svg')
