@@ -9,7 +9,6 @@ export default class LayerGroupSerializer extends EmbeddableSerializer {
   }
 
   normalize(typeClass, hash, ...args) {
-    console.log(hash);
     if (hash.layers) {
       hash.layers.forEach((layer, index) => {
         const mutatedLayer = layer;

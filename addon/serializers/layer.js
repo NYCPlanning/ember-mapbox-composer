@@ -5,7 +5,6 @@ const { JSONSerializer } = DS;
 export default class LayerSerializer extends JSONSerializer {
   // set style.id to also be the id for the layer
   normalize(typeClass, hash) {
-    console.log(hash);
     const mutatedHash = hash;
     mutatedHash.id = hash.style.id;
 
