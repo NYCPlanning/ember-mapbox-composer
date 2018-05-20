@@ -6,7 +6,7 @@ export default Route.extend({
     return {
       sources: this.store.findAll('source'),
       layerGroups: this.store.findAll('layer-group'),
-      // layers: this.store.peekAll('layer'),
+      layers: this.store.peekAll('layer'),
     }
   }
 });
