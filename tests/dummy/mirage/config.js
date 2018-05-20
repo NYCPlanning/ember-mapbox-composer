@@ -4,7 +4,7 @@ export default function() {
 
   this.namespace = 'api';
 
-  // this.get('/layer-groups');
+  this.get('/layer-groups');
   this.get('/sources');
 
   this.passthrough('mapbox://**');

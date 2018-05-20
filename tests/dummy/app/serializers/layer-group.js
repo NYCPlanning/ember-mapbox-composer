@@ -1,15 +1,20 @@
 import DS from 'ember-data';
+import ApplicationSerializer from '../serializers/application';
 
-const { EmbeddedRecordsMixin, JSONSerializer } = DS;
-const EmbeddableSerializer = JSONSerializer.extend(EmbeddedRecordsMixin);
+const { EmbeddedRecordsMixin } = DS;
+const EmbeddableSerializer = ApplicationSerializer.extend(EmbeddedRecordsMixin);
 
 export default class LayerGroupSerializer extends EmbeddableSerializer {
   attrs = {
     layers: { serialize: 'records', deserialize: 'records' },
   }
 
+  normalizeResponse(a, b, { layerGroups }, ...args) {
+    console.log('layerGroups', layerGroups);
+    super.normalizeResponse(a, b, layerGroups, ...args);
+  }
+
   normalize(typeClass, hash, ...args) {
-    console.log(hash);
     if (hash.layers) {
       hash.layers.forEach((layer, index) => {
         const mutatedLayer = layer;
