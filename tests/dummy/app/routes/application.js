@@ -5,7 +5,7 @@ export default Route.extend({
   model() {
     return {
       sources: this.store.findAll('source'),
-      // layerGroups: this.store.findAll('layer-group'),
+      layerGroups: this.store.findAll('layer-group'),
       // layers: this.store.peekAll('layer'),
     }
   }
