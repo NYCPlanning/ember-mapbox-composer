@@ -1,3 +1,14 @@
-<h2 id="title">Welcome to Ember</h2>
+<h2 id="title">Welcome to Ember Labs Maps</h2>
+
+{{#labs-map
+  id='main-map'
+  initOptions=initMapOptions as |map|}}
+  {{#map.labs-layers
+    model=model as |layers|}}
+    {{#layers.tooltip as |tooltip|}}
+      {{tooltip-renderer feature=tooltip.feature template=tooltip.layer.tooltipTemplate}}
+    {{/layers.tooltip}}
+  {{/map.labs-layers}}
+{{/labs-map}}
 
 {{outlet}}
