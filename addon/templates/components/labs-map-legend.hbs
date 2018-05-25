@@ -1,11 +1,17 @@
 <ul class="legend no-bullet">
+  {{log model}}
   {{#each model.items as |legendItem|}}
+    {{log 'legendItem' legendItem}}
     <li class="legend-item">
-      {{component (concat 'labs-map-legend-' legendItem.type) 
+      {{component (concat 'labs-map-legend-' legendItem.type)
         style=legendItem.style}}
       {{legendItem.label}}
-      {{info-tooltip 
-        tip="A street that has been established on an adopted alteration map or section map and filed with the appropriate agencies"}}
+      {{#if legendItem.tooltip}}
+        <span class="tooltip float-right primary-color">
+          {{fa-icon "info-circle"}}
+          {{ember-tooltip text=legendItem.tooltip side=left keepInWindow=false}}
+        </span>
+      {{/if}}
     </li>
   {{/each}}
 </ul>
