@@ -3,4 +3,12 @@ const { JSONAPIAdapter } = DS;
 
 export default class ApplicationAdapter extends JSONAPIAdapter {
   namespace = 'api'
+
+  _ajaxRequest() {
+    if (window.FakeXMLHttpRequest) {
+      window.XMLHttpRequest = window.XMLHttpRequestFake;
+    }
+
+    super._ajaxRequest(...arguments);
+  }
 }

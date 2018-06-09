@@ -26,11 +26,12 @@
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-htmlbars-inline-precompile": "^1.0.0",
     "ember-decorators": "2.1.0",
+    "ember-fetch": "4.0.2",
+    "ember-font-awesome": "^4.0.0-rc.2",
     "ember-mapbox-gl": "0.10.0",
     "ember-truth-helpers": "2.0.0",
-    "ember-tooltips": "^3.0.0-beta.2",
-    "ember-font-awesome": "^4.0.0-rc.2",
-    "pretender": "2.0.0"
+    "pretender": "2.0.0",
+    "ember-tooltips": "NYCPlanning/ember-tooltips#remove-tether-dependency"
   },
   "devDependencies": {
     "@ember-decorators/babel-transforms": "^2.0.0",
@@ -56,6 +57,7 @@
     "ember-resolver": "^4.0.0",
     "ember-source": "~3.0.0",
     "ember-source-channel-url": "^1.0.1",
+    "ember-tooltips": "NYCPlanning/ember-tooltips#remove-tether-dependency",
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^5.2.1",

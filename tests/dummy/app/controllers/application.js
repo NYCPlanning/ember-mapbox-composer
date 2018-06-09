@@ -10,5 +10,9 @@ export default Controller.extend({
     pitch,
     bearing,
     style: 'https://raw.githubusercontent.com/NYCPlanning/labs-gl-style/master/data/style.json',
-  }
+    transformRequest(url) {
+      window.XMLHttpRequest = window.XMLHttpRequestNative;
+      return { url };
+    } 
+  },
 });
