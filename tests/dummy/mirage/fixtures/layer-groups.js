@@ -2,6 +2,7 @@ export default [
   {
     "id": "aerials",
     "title": "Aerial Imagery",
+    "visible": false,
     "titleTooltip": "Aerial Photos Raster Tiles provided by DoITT GIS",
     "meta": {
       "description": "NYC DoITT GIS Aerial Photography Tile Layers (TMS)",
@@ -142,7 +143,7 @@ export default [
     "legendIcon": "polygon-stacked",
     "legendColor": "rgba(174, 86, 31, 0.4)",
     "visible": true,
-    "highlightable": false,
+    "highlightable": true,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
@@ -222,7 +223,7 @@ export default [
     "title": "Street Lines",
     "legendIcon": "",
     "legendColor": "",
-    "visible": true,
+    "visible": false,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
@@ -796,7 +797,7 @@ export default [
     "titleTooltip": "The Pierhead line is the extent to which piers and platforms over water may be built as shown on the City Map.  The Bulkhead line is the extent to which the filling of land is permitted without additional permits.",
     "legendIcon": "",
     "legendColor": "",
-    "visible": true,
+    "visible": false,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
@@ -966,7 +967,7 @@ export default [
     "titleTooltip": "Legal street names as shown on the City Map",
     "legendIcon": "",
     "legendColor": "",
-    "visible": true,
+    "visible": false,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
