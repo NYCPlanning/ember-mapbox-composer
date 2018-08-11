@@ -6,9 +6,10 @@ import { copy } from '@ember/object/internals';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
 
-export default class LayerModel extends Model {
+export default class LayerModel extends Model.extend({}) {
   constructor(...args) {
     super(...args);
+    if (!this.get('layout')) this.set('layout', {});
     this.delegateVisibility();
     this.addObserver('layerGroup.visible', this, 'delegateVisibility');
   }
