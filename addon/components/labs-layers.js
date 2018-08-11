@@ -16,11 +16,6 @@ export default class MainMapLayersComponent extends Component {
     // add source for highlighted-feature
     map
       .addSource('hovered-feature', this.get('hoveredFeatureSource'));
-
-    const sources = this.get('sources');
-    sources.forEach((source) => {
-      map.addSource(source.id, source);
-    });
   }
 
   @argument
