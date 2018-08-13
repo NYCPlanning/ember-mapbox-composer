@@ -64,9 +64,6 @@ export default class MainMapLayersComponent extends Component {
   @alias('model.layers')
   layers;
 
-  @alias('model.sources')
-  sources;
-
   @argument
   toolTipComponent = 'labs-layers-tooltip';
   hoveredFeature = null;

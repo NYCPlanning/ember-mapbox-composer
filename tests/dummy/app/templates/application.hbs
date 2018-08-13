@@ -2,6 +2,7 @@
 
 {{#labs-map
   id='main-map'
+  mapLoaded=(action 'handleMapLoad')
   initOptions=initMapOptions as |map|}}
   {{#map.labs-layers
     model=model as |layers|}}

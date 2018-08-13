@@ -3,12 +3,16 @@ import normalizeCartoVectors from 'cartobox-promises-utility/utils/normalize-car
 import { hash } from 'rsvp';
 
 export default Route.extend({
-  model() {
-    return hash({
-      sources: this.store.findAll('source')
-        .then(sourceModels => normalizeCartoVectors(sourceModels.toArray())),
-      layerGroups: this.store.findAll('layer-group'),
-      layers: this.store.peekAll('layer'),
-    });
+  async model() {
+    const layerGroups = await this.store.query('layer-group', {});
+    const layers = this.store.peekAll('layer');
+    const { meta } = layerGroups;
+
+    return {
+      layerGroups,
+      layers,
+      sources: [],
+      meta,
+    };
   }
 });
