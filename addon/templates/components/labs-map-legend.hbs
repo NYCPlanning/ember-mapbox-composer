@@ -1,7 +1,5 @@
 <ul class="legend no-bullet">
-  {{log model}}
   {{#each model.items as |legendItem|}}
-    {{log 'legendItem' legendItem}}
     <li class="legend-item">
       {{component (concat 'labs-map-legend-' legendItem.type)
         style=legendItem.style}}
