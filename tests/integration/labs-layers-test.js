@@ -2,6 +2,7 @@ import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import { render, waitUntil } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
+import ArrayProxy from '@ember/array/proxy';
 import mapboxgl from 'mapbox-gl';
 import { run } from '@ember/runloop';
 import createMap from '../helpers/create-map';
@@ -50,9 +51,14 @@ module('Integration | Component | labs-layers', {
     this.set('map', this.map);
     this.set('model', {
       sources: [],
-      layers: [this.layer]
+      layerGroups: [
+        {
+          layers: [this.layer]
+        }
+      ]
     });
-    await render(hbs`{{labs-layers model=model map=map}}`);
+
+    await render(hbs`{{labs-layers layerGroups=model.layerGroups map=map}}`);
 
     assert.deepEqual(
       this.map.getFilter(this.layer.get('style.id')),
@@ -77,19 +83,6 @@ module('Integration | Component | labs-layers', {
 
   test('changes to model paint mutate mapbox state', async function(assert) {
     let store = this.owner.lookup('service:store');
-    await this.map.addSource('filter-test',{
-      type: 'geojson',
-      data: {
-        type: 'Feature',
-        geometry: {
-          type: 'Point',
-          coordinates: [
-            -76.53063297271729,
-            39.18174077994108
-          ]
-        }
-      }
-    });
 
     this.layer = await run(() =>
       store.createRecord('layer', {
@@ -118,11 +111,14 @@ module('Integration | Component | labs-layers', {
 
     this.set('map', this.map);
     this.set('model', {
-      sources: [],
-      layers: [this.layer]
+      layerGroups: [
+        {
+          layers: ArrayProxy.create({ content: [this.layer] }),
+        },
+      ],
     });
 
-    await render(hbs`{{labs-layers model=model map=map}}`);
+    await render(hbs`{{labs-layers layerGroups=model.layerGroups map=map}}`);
 
     assert.equal(
       this.map.getPaintProperty(this.layer.get('style.id'), 'circle-color'), 

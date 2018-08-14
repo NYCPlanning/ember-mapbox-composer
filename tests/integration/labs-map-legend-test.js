@@ -38,7 +38,6 @@ module('Integration | Component | labs-map-legend', function(hooks) {
     await render(hbs`{{labs-map-legend model=model}}`);
 
     const tooltip = await find('.tooltip');
-    console.log('tooltip', tooltip)
     assert.equal(!!tooltip, false);
 
   });

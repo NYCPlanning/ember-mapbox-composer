@@ -5,7 +5,7 @@
   mapLoaded=(action 'handleMapLoad')
   initOptions=initMapOptions as |map|}}
   {{#map.labs-layers
-    model=model as |layers|}}
+    layerGroups=model.layerGroups as |layers|}}
     {{#layers.tooltip as |tooltip|}}
       {{tooltip-renderer feature=tooltip.feature template=tooltip.layer.tooltipTemplate}}
     {{/layers.tooltip}}

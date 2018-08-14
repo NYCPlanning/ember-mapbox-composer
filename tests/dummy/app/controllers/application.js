@@ -21,7 +21,6 @@ export default Controller.extend({
 
   actions: {
     handleMapLoad(map) {
-      console.log(map);
       window.map = map;
     },
   },

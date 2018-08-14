@@ -10,8 +10,6 @@ export default Route.extend({
 
     return {
       layerGroups,
-      layers,
-      sources: [],
       meta,
     };
   }

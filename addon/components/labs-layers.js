@@ -2,9 +2,9 @@ import Component from '@ember/component';
 import { action, computed } from '@ember-decorators/object';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
-import { alias } from '@ember-decorators/object/computed';
 import { Action } from '@ember-decorators/argument/types';
 import { type } from '@ember-decorators/argument/type';
+import { get } from '@ember/object';
 import layout from '../templates/components/labs-layers';
 
 export default class MainMapLayersComponent extends Component {
@@ -53,7 +53,6 @@ export default class MainMapLayersComponent extends Component {
 
   layout=layout
 
-  @required
   @argument
   model;
 
@@ -61,8 +60,23 @@ export default class MainMapLayersComponent extends Component {
   @argument
   map;
 
-  @alias('model.layers')
-  layers;
+  @required
+  @argument
+  layerGroups;
+
+  @computed('layerGroups.@each.layers')
+  get layers() {
+    return this.get('layerGroups')
+      .map((layerGroup) => get(layerGroup, 'layers'))
+      .reduce((accumulator, current) => {
+        const layers = current
+          .toArray()
+          .map(layer => layer.toJSON())
+          .map(({ style }) => style);
+
+        return [...accumulator, ...layers];
+      }, []);
+  }
 
   @argument
   toolTipComponent = 'labs-layers-tooltip';
