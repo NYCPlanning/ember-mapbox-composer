@@ -5,6 +5,7 @@ import { required } from '@ember-decorators/argument/validation';
 import { Action } from '@ember-decorators/argument/types';
 import { type } from '@ember-decorators/argument/type';
 import { get } from '@ember/object';
+import ArrayProxy from '@ember/array/proxy';
 import layout from '../templates/components/labs-layers';
 
 export default class MainMapLayersComponent extends Component {
@@ -63,13 +64,15 @@ export default class MainMapLayersComponent extends Component {
 
   @computed('layerGroups.@each.layers')
   get layers() {
-    return Ember.ArrayProxy.create({ content: this.get('layerGroups')
-              .map((layerGroup) => get(layerGroup, 'layers'))
-              .reduce((accumulator, current) => {
-                const layers = current.toArray();
-        
-                return [...accumulator, ...layers];
-              }, [])});
+    return ArrayProxy.create({
+      content: this.get('layerGroups')
+        .map((layerGroup) => get(layerGroup, 'layers'))
+        .reduce((accumulator, current) => {
+          const layers = current.toArray();
+
+          return [...accumulator, ...layers];
+        }, [])
+    });
   }
 
   @argument

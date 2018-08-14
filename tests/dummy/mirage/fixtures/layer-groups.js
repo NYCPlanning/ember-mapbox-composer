@@ -487,6 +487,7 @@ export default [
     "titleTooltip": "The regulations for special purpose districts are designed to supplement and modify the underlying zoning in order to respond to distinctive neighborhoods with particular issues and goals",
     "legendIcon": "polygon-fill-dash",
     "legendColor": "rgba(94,102,51, 1)",
+    "visible": false,
     "meta": {
       "description": "NYC GIS Zoning Features February 2018, Bytes of the Big Apple",
       "url": [
