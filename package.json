@@ -29,9 +29,9 @@
     "ember-fetch": "4.0.2",
     "ember-font-awesome": "^4.0.0-rc.2",
     "ember-mapbox-gl": "0.10.0",
+    "ember-tooltips": "NYCPlanning/ember-tooltips#remove-tether-dependency",
     "ember-truth-helpers": "2.0.0",
-    "pretender": "2.0.0",
-    "ember-tooltips": "NYCPlanning/ember-tooltips#remove-tether-dependency"
+    "pretender": "2.0.0"
   },
   "devDependencies": {
     "@ember-decorators/babel-transforms": "^2.0.0",
@@ -39,6 +39,7 @@
     "broccoli-asset-rev": "^2.4.5",
     "cartobox-promises-utility": "nycplanning/cartobox-promises-utility#v1.0.2",
     "ember-ajax": "^3.0.0",
+    "ember-auto-import": "1.2.8",
     "ember-cli": "~3.0.2",
     "ember-cli-dependency-checker": "^2.0.0",
     "ember-cli-eslint": "^4.2.1",
@@ -61,6 +62,7 @@
     "ember-try": "^0.2.23",
     "eslint-plugin-ember": "^5.0.0",
     "eslint-plugin-node": "^5.2.1",
+    "jsonapi-serializer": "3.5.6",
     "loader.js": "^4.2.3",
     "mapbox-gl": "^0.44.0",
     "pretender": "2.0.0"

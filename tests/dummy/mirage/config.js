@@ -1,5 +1,7 @@
 import patchXMLHTTPRequest from './helpers/mirage-mapbox-gl-monkeypatch';
 import mapboxStyle from './data/mapboxStyle';
+import layerGroupSerializer from './helpers/custom-serializer';
+import rawData from './fixtures/layer-groups';
 
 export default function() {
   patchXMLHTTPRequest();
@@ -8,10 +10,8 @@ export default function() {
 
   // this.namespace = 'api';
 
-  this.get('/layer-groups', function(schema, request) {
-    const json = this.serialize(
-      schema.layerGroups.all(),
-    );
+  this.get('/layer-groups', function() {
+    const json = layerGroupSerializer(rawData);
 
     json.meta = {
       mapboxStyle
