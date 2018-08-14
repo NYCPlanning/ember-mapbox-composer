@@ -4,7 +4,7 @@ import { mapBy } from '@ember-decorators/object/computed';
 import { computed } from '@ember-decorators/object';
 
 export default class LayerGroupModel extends Model.extend({}) {
-  @hasMany('layer', { async: false }) layers
+  @hasMany('layer') layers
 
   @attr('boolean', { defaultValue: true }) visible
 
