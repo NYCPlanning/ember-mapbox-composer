@@ -411,7 +411,7 @@ export default [
     "meta": {
       "description": "NYC GIS Zoning Features February 2018, Bytes of the Big Apple",
       "url": [
-        "https:\/\/www1.nyc.gov\/site\/planning\/data-maps\/open-data.page"
+        "https://www1.nyc.gov/site/planning/data-maps/open-data.page"
       ],
       "updated_at": "5 March 2018"
     },
@@ -488,7 +488,7 @@ export default [
     "meta": {
       "description": "NYC GIS Zoning Features February 2018, Bytes of the Big Apple",
       "url": [
-        "https:\/\/www1.nyc.gov\/site\/planning\/data-maps\/open-data.page"
+        "https://www1.nyc.gov/site/planning/data-maps/open-data.page"
       ],
       "updated_at": "5 March 2018"
     },
@@ -543,7 +543,7 @@ export default [
     "meta": {
       "description": "MapPLUTO\u2122 v17v1.1, Bytes of the Big Apple",
       "url": [
-        "https:\/\/www1.nyc.gov\/site\/planning\/data-maps\/open-data.page"
+        "https://www1.nyc.gov/site/planning/data-maps/open-data.page"
       ],
       "updated_at": "5 March 2018"
     },
@@ -731,7 +731,7 @@ export default [
     "meta": {
       "description": "NYC GIS Zoning Features March 2018, Bytes of the Big Apple",
       "url": [
-        "https:\/\/www1.nyc.gov\/site\/planning\/data-maps\/open-data.page"
+        "https://www1.nyc.gov/site/planning/data-maps/open-data.page"
       ],
       "updated_at": "April 5th, 2018"
     },

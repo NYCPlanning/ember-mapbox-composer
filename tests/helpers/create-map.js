@@ -1,4 +1,3 @@
-import { registerAsyncHelper } from '@ember/test';
 import { Promise } from 'rsvp';
 import Config from '../../config/environment';
 import MapboxGl from 'mapbox-gl';

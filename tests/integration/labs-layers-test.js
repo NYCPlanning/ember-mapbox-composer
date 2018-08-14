@@ -1,9 +1,8 @@
 import { module, test, skip } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
-import { render, waitUntil } from '@ember/test-helpers';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 import ArrayProxy from '@ember/array/proxy';
-import mapboxgl from 'mapbox-gl';
 import { run } from '@ember/runloop';
 import createMap from '../helpers/create-map';
 

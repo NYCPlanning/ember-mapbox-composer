@@ -53,9 +53,6 @@ export default class MainMapLayersComponent extends Component {
 
   layout=layout
 
-  @argument
-  model;
-
   @required
   @argument
   map;
