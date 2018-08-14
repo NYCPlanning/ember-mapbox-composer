@@ -1,10 +1,25 @@
+import patchXMLHTTPRequest from './helpers/mirage-mapbox-gl-monkeypatch';
+import mapboxStyle from './data/mapboxStyle';
+
 export default function() {
+  patchXMLHTTPRequest();
   // mirage/config.js
   this.passthrough('style.json');
 
-  this.namespace = 'api';
+  // this.namespace = 'api';
 
-  this.get('/layer-groups');
+  this.get('/layer-groups', function(schema, request) {
+    const json = this.serialize(
+      schema.layerGroups.all(),
+    );
+
+    json.meta = {
+      mapboxStyle
+    };
+
+    return json;
+  });
+
   this.get('/sources');
 
   this.passthrough('mapbox://**');
