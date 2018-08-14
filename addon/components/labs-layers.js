@@ -63,13 +63,13 @@ export default class MainMapLayersComponent extends Component {
 
   @computed('layerGroups.@each.layers')
   get layers() {
-    return this.get('layerGroups')
-      .map((layerGroup) => get(layerGroup, 'layers'))
-      .reduce((accumulator, current) => {
-        const layers = current.toArray();
-
-        return [...accumulator, ...layers];
-      }, []);
+    return Ember.ArrayProxy.create({ content: this.get('layerGroups')
+              .map((layerGroup) => get(layerGroup, 'layers'))
+              .reduce((accumulator, current) => {
+                const layers = current.toArray();
+        
+                return [...accumulator, ...layers];
+              }, [])});
   }
 
   @argument
@@ -108,6 +108,7 @@ export default class MainMapLayersComponent extends Component {
   handleLayerMouseMove(e) {
     const map = this.get('map');
     const [feature] = e.features;
+
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
 
     const { highlightable, tooltipable } =

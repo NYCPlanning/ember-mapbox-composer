@@ -14,6 +14,8 @@ export default [
     "layers": [
       {
         "before": "place_other",
+        "tooltipable": true,
+        "tooltipTemplate": "{{type}}",
         "style": {
           "id": "citymap-amendments-fill",
           "type": "fill",

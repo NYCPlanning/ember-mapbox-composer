@@ -1,12 +1,12 @@
 import { Serializer } from 'jsonapi-serializer';
 
 export default (data) => new Serializer('layer-groups', {
-  attributes: ['id', 'layers', 'title'],
+  attributes: ['id','title','visible','layerVisibilityType','titleTooltip','meta','layers','legendConfig','legendIcon','legendColor'],
   layers: {
     ref(parent, child) {
       return child.style.id;
     },
     included: true,
-    attributes: ['style', 'before'],
+    attributes: ['style','displayName','before','clickable','highlightable','tooltipable','tooltipTemplate'],
   },
 }).serialize(data);
