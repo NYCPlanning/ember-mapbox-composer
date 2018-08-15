@@ -1,0 +1,30 @@
+{{docs-header}}
+
+{{docs-hero
+  logo='ember'
+  slimHeading='Mapbox'
+  strongHeading='Composer'
+  byline='Tools for ambitious mapping applications'}}
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name='map.hbs'}}
+    {{#labs-map
+      id='main-map'
+      initOptions=(hash 
+        center=(array -73.92 40.7)
+        zoom=10
+        bearing=0.5
+        style=model.meta.mapboxStyle
+      ) as |map|}}
+      {{#map.labs-layers
+        layerGroups=model.layerGroups as |layers|}}
+        {{#layers.tooltip}}
+          Bananas
+        {{/layers.tooltip}}
+      {{/map.labs-layers}}
+    {{/labs-map}}
+  {{/demo.example}}
+
+  {{demo.snippet 'map.hbs' label='Template'}}
+  {{demo.snippet 'layerGroupsRoute.js' label='Route'}}
+{{/docs-demo}}

@@ -12,16 +12,6 @@ export default Controller.extend({
       pitch,
       bearing,
       style: this.get('model.meta.mapboxStyle'),
-      transformRequest(url) {
-        window.XMLHttpRequest = window.XMLHttpRequestNative;
-        return { url };
-      },
     };
   }),
-
-  actions: {
-    handleMapLoad(map) {
-      window.map = map;
-    },
-  },
 });
