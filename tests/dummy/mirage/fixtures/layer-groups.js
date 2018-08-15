@@ -5,7 +5,7 @@ export default [
     "titleTooltip": "An index of alterations to the City Map. Alteration Maps show changes made to the City Map and, when they are the most recent in an area, serve as an official record of the City Map in the area they depict.",
     "legendIcon": "polygon-stacked",
     "legendColor": "rgba(174, 86, 31, 0.4)",
-    "visible": false,
+    "visible": true,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
