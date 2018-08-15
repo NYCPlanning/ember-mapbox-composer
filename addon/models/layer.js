@@ -31,21 +31,21 @@ export default class LayerModel extends Model.extend({}) {
   @belongsTo('layer-group') layerGroup
 
   @attr('number', { defaultValue: -1 }) position;
+  @attr('string', { defaultValue: 'boundary_country' }) before
+  @attr('string') displayName;
+  @attr({ defaultValue: () => ({}) }) style
+  @attr('boolean', { defaultValue: false }) highlightable;
+  @attr('boolean', { defaultValue: false }) tooltipable
+  @attr('string', { defaultValue: '' }) tooltipTemplate
+
+  @alias('style.paint') paint;
+  @alias('style.layout') layout;
+  @alias('layerGroup.layerVisibilityType') layerVisibilityType;
 
   @computed('style.{paint,layout,filter}')
   get mapboxGlStyle() {
     return this.get('style');
   }
-
-  @attr('string', { defaultValue: 'boundary_country' }) before
-
-  @attr('string') displayName;
-
-  @attr({ defaultValue: () => ({}) }) style
-
-  @alias('style.paint') paint;
-
-  @alias('style.layout') layout;
 
   // getter and setter for filter
   // accepts array
@@ -75,12 +75,4 @@ export default class LayerModel extends Model.extend({}) {
       this.set('layout', layout);
     }
   }
-
-  @alias('layerGroup.highlightable') highlightable;
-
-  @alias('layerGroup.layerVisibilityType') layerVisibilityType;
-
-  @attr('boolean', { defaultValue: false }) tooltipable
-
-  @attr('string', { defaultValue: '' }) tooltipTemplate
 }

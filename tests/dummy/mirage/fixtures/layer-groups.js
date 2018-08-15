@@ -88,7 +88,7 @@ export default [
     "title": "Street Lines",
     "legendIcon": "",
     "legendColor": "",
-    "visible": false,
+    "visible": true,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
@@ -100,6 +100,7 @@ export default [
           "type": "line",
           "source": "digital-citymap",
           "source-layer": "citymap",
+          "highlightable": true,
           "paint": {
             "line-color": "rgba(51, 51, 51, 1)",
             "line-width": {
@@ -430,7 +431,7 @@ export default [
             "fill-opacity": 0
           }
         },
-        "highlightable": true,
+        "highlightable": false,
         "clickable": true,
         "tooltipTemplate": "{{overlay}}"
       },
