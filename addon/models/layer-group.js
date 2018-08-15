@@ -8,8 +8,6 @@ export default class LayerGroupModel extends Model.extend({}) {
 
   @attr('boolean', { defaultValue: true }) visible
 
-  @attr('boolean', { defaultValue: false }) highlightable
-
   /*
   this property describes the visibility state
   of the associated layers. layer groups can have
@@ -19,6 +17,14 @@ export default class LayerGroupModel extends Model.extend({}) {
     - binary (all are visible or none are visible)
   */
   @attr('string', { defaultValue: 'binary' }) layerVisibilityType
+  @attr('string') title
+  @attr('string', { defaultValue: '' }) titleTooltip
+  @attr('string') legendIcon
+  @attr('string') legendColor
+  @attr('string') meta
+  @attr() legendConfig  
+
+  @mapBy('layers', 'id') layerIds;
 
   // singleton only
   @computed('layers.@each.visibility')
@@ -29,20 +35,6 @@ export default class LayerGroupModel extends Model.extend({}) {
     this.get('layers').setEach('visibility', false);
     this.get('layers').findBy('id', id).set('visibility', true);
   }
-
-  @attr('string') title
-
-  @attr('string', { defaultValue: '' }) titleTooltip
-
-  @attr('string') legendIcon
-
-  @attr('string') legendColor
-
-  @attr('string') meta
-
-  @attr() legendConfig
-
-  @mapBy('layers', 'id') layerIds
 
   showOneLayer(id) {
     this.get('layers').forEach((layer) => {
