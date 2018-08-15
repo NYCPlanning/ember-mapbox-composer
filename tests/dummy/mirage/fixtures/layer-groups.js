@@ -6,7 +6,6 @@ export default [
     "legendIcon": "polygon-stacked",
     "legendColor": "rgba(174, 86, 31, 0.4)",
     "visible": true,
-    "highlightable": true,
     "meta": {
       "description": "NYC Department of City Planning Technical Review Division",
       "updated_at": "6 April 2018"
@@ -14,8 +13,9 @@ export default [
     "layers": [
       {
         "before": "place_other",
-        "tooltipable": true,
+        "tooltipable": false,
         "tooltipTemplate": "{{type}}",
+        "highlightable": true,
         "style": {
           "id": "citymap-amendments-fill",
           "type": "fill",
@@ -487,6 +487,7 @@ export default [
     "titleTooltip": "The regulations for special purpose districts are designed to supplement and modify the underlying zoning in order to respond to distinctive neighborhoods with particular issues and goals",
     "legendIcon": "polygon-fill-dash",
     "legendColor": "rgba(94,102,51, 1)",
+    "highlightable": false,
     "visible": false,
     "meta": {
       "description": "NYC GIS Zoning Features February 2018, Bytes of the Big Apple",
