@@ -5,11 +5,16 @@ import { alias } from '@ember-decorators/object/computed';
 import { copy } from '@ember/object/internals';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
+import EmberObject from '@ember/object';
 
 export default class LayerModel extends Model.extend({}) {
   constructor(...args) {
     super(...args);
-    if (!this.get('layout')) this.set('layout', {});
+
+    this.set('style', EmberObject.create(this.get('style')));
+
+    if (!this.get('style.layout')) this.set('style.layout', {});
+
     this.delegateVisibility();
     this.addObserver('layerGroup.visible', this, 'delegateVisibility');
   }

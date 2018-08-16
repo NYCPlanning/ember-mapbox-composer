@@ -6,8 +6,11 @@
   strongHeading='Composer'
   byline='Tools for ambitious mapping applications'}}
 
+{{log model.layerGroups.firstObject.layers.firstObject.mapboxGlStyle.layout.visibility}}
+
 {{#labs-map
   id='main-map'
+  mapLoaded=(action 'mapLoaded')
   initOptions=initMapOptions as |map|}}
   {{#map.labs-layers
     layerGroups=model.layerGroups as |layers|}}

@@ -15,5 +15,11 @@ export default Controller.extend({
       style: this.get('model.meta.mapboxStyle'),
     };
   }),
+
+  actions: {
+    mapLoaded(e) {
+      window.map = e;
+    }
+  }
 });
 // END-SNIPPET
