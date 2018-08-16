@@ -1,4 +1,4 @@
-// BEGIN-SNIPPET layerGroupsRoute.js
+// BEGIN-SNIPPET layer-group-route.js
 import Route from '@ember/routing/route';
 
 export default Route.extend({

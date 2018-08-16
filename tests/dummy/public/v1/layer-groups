@@ -6,6 +6,7 @@
       "attributes": {
         "id": "aerials",
         "title": "Aerial Imagery",
+        "visible": false,
         "layer-visibility-type": "singleton",
         "title-tooltip": "Aerial Photos Raster Tiles provided by DoITT GIS",
         "meta": {
@@ -111,7 +112,7 @@
       "attributes": {
         "id": "amendments",
         "title": "Adopted City Map Alterations",
-        "visible": true,
+        "visible": false,
         "title-tooltip": "An index of alterations to the City Map. Alteration Maps show changes made to the City Map and, when they are the most recent in an area, serve as an official record of the City Map in the area they depict.",
         "meta": {
           "description": "NYC Department of City Planning Technical Review Division",
@@ -343,7 +344,8 @@
           "updated-at": "September 2017"
         },
         "legend-icon": "polygon",
-        "legend-color": "#0084a8"
+        "legend-color": "#0084a8",
+        "visible": false
       },
       "relationships": {
         "layers": {
@@ -1363,6 +1365,7 @@
           }
         },
         "highlightable": true,
+        "tooltipable": true,
         "tooltip-template": "2015 {{fld_zone}} Zone"
       }
     },
