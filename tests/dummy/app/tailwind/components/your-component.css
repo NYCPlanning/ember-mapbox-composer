@@ -15,3 +15,7 @@
  @apply .bg-blue-dark;
 }
 */
+
+.docs-section {
+  @apply .leading-normal;
+}

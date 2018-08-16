@@ -1,4 +1,4 @@
-## Why?
+## Motive
 Large mapping applications involve many layers whose state can be changed through an API, user interaction, or query parameters. Mapbox Composer is a set of Ember models and components that can make it easier to manage the state of layers without losing the flexibility of MapboxGL.
 
 It works like this: you serve out a collection of layer-groups from a JSON file or API, load them into Ember's data store, and pass these models to a `labs-layers` component. These layers will be rendered according to an opinionated data structure we've designed, along with some other goodies. 
