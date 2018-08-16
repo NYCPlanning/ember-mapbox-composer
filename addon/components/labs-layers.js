@@ -8,7 +8,50 @@ import { get } from '@ember/object';
 import ArrayProxy from '@ember/array/proxy';
 import layout from '../templates/components/labs-layers';
 
-export default class MainMapLayersComponent extends Component {
+/**
+  Renders a collection of composer-compatible layer groups.
+  
+  ```js
+    // routes/application.js
+    import Route from '@ember/routing/route';
+
+    export default class ApplicationRoute extends Route {
+      async model() {
+        return [{
+          id: 'roads',
+          layers: [{
+            id: 'highways',
+            style: {
+              type: 'line',
+              paint: {
+                'line-fill': 'orange',
+              },
+            },
+          }, {
+            id: 'streets',
+            style: {
+              type: 'line',
+              paint: {
+                'line-fill': 'blue',
+              },
+            },
+          }]
+        }];
+      }
+    }
+
+  ```
+  ```handlebars
+    {{!-- routes/application.hbs --}}
+    {{#labs-map as |map|}} 
+      {{map.labs-layers layerGroups=model}}
+    {{/labs-map}}
+  ```
+
+  @class LabsLayersComponent
+  @public
+*/
+export default class LayersComponent extends Component {
   constructor(...args) {
     super(...args);
 
@@ -19,17 +62,67 @@ export default class MainMapLayersComponent extends Component {
       .addSource('hovered-feature', this.get('hoveredFeatureSource'));
   }
 
+  layout=layout
+
+  /**
+    Reference to a instance of a MapboxGL map. Handled internally when using contextual components:
+
+    ```
+      {{#labs-map as |map|}}
+        {{map.labs-layers layerGroups=model}}
+      {{/labs-map}}
+    ```
+    @argument map
+    @private
+    @type MapboxGL Map Instance
+  */
+  @required
+  @argument
+  map;
+
+  /**
+    Collection of layer-group objects
+    @argument layerGroups
+    @type Array
+  */
+  @required
+  @argument
+  layerGroups;
+
+  /**
+    Event fired on layer click. Scoped to individual layers. Returns the mouse event and clicked layer.
+    @argument onLayerClick
+    @type Action
+  */
   @argument
   @type(Action)
   onLayerClick = () => {};
 
+  /**
+    Event fired on layer mousemove. Scoped to individual layers. Returns the mouse event and found layer.
+    @argument onLayerMouseMove
+    @type Action
+  */
   @argument
   @type(Action)
   onLayerMouseMove = () => {};
 
+  /**
+    Event fired on layer mouseleave. Scoped to individual layers. Returns the mouse event and found layer.
+    @argument onLayerMouseLeave
+    @type Action
+  */
   @argument
   @type(Action)
   onLayerMouseLeave = () => {};
+
+  /**
+    Name of local component to use in place of default component.
+    @argument toolTipComponent
+    @type String
+  */
+  @argument
+  toolTipComponent = 'labs-layers-tooltip';
 
   @computed('hoveredFeature')
   get hoveredFeatureSource() {
@@ -52,16 +145,6 @@ export default class MainMapLayersComponent extends Component {
     return null;
   }
 
-  layout=layout
-
-  @required
-  @argument
-  map;
-
-  @required
-  @argument
-  layerGroups;
-
   @computed('layerGroups.@each.layers')
   get layers() {
     return ArrayProxy.create({
@@ -75,8 +158,6 @@ export default class MainMapLayersComponent extends Component {
     });
   }
 
-  @argument
-  toolTipComponent = 'labs-layers-tooltip';
   hoveredFeature = null;
   mousePosition = null;
 
