@@ -12,40 +12,40 @@ import layout from '../templates/components/labs-layers';
   Renders a collection of composer-compatible layer groups.
   
   ```js
-    // routes/application.js
-    import Route from '@ember/routing/route';
+  // routes/application.js
+  import Route from '@ember/routing/route';
 
-    export default class ApplicationRoute extends Route {
-      async model() {
-        return [{
-          id: 'roads',
-          layers: [{
-            id: 'highways',
-            style: {
-              type: 'line',
-              paint: {
-                'line-fill': 'orange',
-              },
+  export default class ApplicationRoute extends Route {
+    async model() {
+      return [{
+        id: 'roads',
+        layers: [{
+          id: 'highways',
+          style: {
+            type: 'line',
+            paint: {
+              'line-fill': 'orange',
             },
-          }, {
-            id: 'streets',
-            style: {
-              type: 'line',
-              paint: {
-                'line-fill': 'blue',
-              },
+          },
+        }, {
+          id: 'streets',
+          style: {
+            type: 'line',
+            paint: {
+              'line-fill': 'blue',
             },
-          }]
-        }];
-      }
+          },
+        }]
+      }];
     }
+  }
 
   ```
   ```handlebars
-    {{!-- routes/application.hbs --}}
-    {{#labs-map as |map|}} 
-      {{map.labs-layers layerGroups=model}}
-    {{/labs-map}}
+  {{!-- routes/application.hbs --}}
+  {{#labs-map as |map|}} 
+    {{map.labs-layers layerGroups=model}}
+  {{/labs-map}}
   ```
 
   @class LabsLayersComponent
@@ -68,9 +68,9 @@ export default class LayersComponent extends Component {
     Reference to a instance of a MapboxGL map. Handled internally when using contextual components:
 
     ```
-      {{#labs-map as |map|}}
-        {{map.labs-layers layerGroups=model}}
-      {{/labs-map}}
+  {{#labs-map as |map|}}
+    {{map.labs-layers layerGroups=model}}
+  {{/labs-map}}
     ```
     @argument map
     @private

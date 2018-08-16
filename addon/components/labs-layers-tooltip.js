@@ -10,48 +10,47 @@ import layout from '../templates/components/labs-layers-tooltip';
   Renders a component when a "tooltipable" layer is hovered. 
   
   ```js
-    // routes/application.js
-    import Route from '@ember/routing/route';
+  // routes/application.js
+  import Route from '@ember/routing/route';
 
-    export default class ApplicationRoute extends Route {
-      async model() {
-        return [{
-          id: 'roads',
-          layers: [{
-            id: 'highways',
-            tooltipable: true,
-            style: {
-              type: 'line',
-              paint: {
-                'line-fill': 'orange',
-              },
+  export default class ApplicationRoute extends Route {
+    async model() {
+      return [{
+        id: 'roads',
+        layers: [{
+          id: 'highways',
+          tooltipable: true,
+          style: {
+            type: 'line',
+            paint: {
+              'line-fill': 'orange',
             },
-          }, {
-            id: 'streets',
-            tooltipable: true,
-            style: {
-              type: 'line',
-              paint: {
-                'line-fill': 'blue',
-              },
+          },
+        }, {
+          id: 'streets',
+          tooltipable: true,
+          style: {
+            type: 'line',
+            paint: {
+              'line-fill': 'blue',
             },
-          }]
-        }];
-      }
+          },
+        }]
+      }];
     }
-
+  }
   ```
   ```handlebars
-    {{!-- routes/application.hbs --}}
-    {{#labs-map as |map|}} 
-      {{#map.labs-layers layerGroups=model as |layers|}}
-        {{#layers.tooltip as |tip|}}
-          This text appears over the tooltipable layer on mouseover. Yields a hash with two properties:
-           - {{tip.feature}}
-           - {{tip.layer}}
-        {{/layers.tooltip}}
-      {{/map}}
-    {{/labs-map}}
+{{!-- routes/application.hbs --}}
+{{#labs-map as |map|}} 
+  {{#map.labs-layers layerGroups=model as |layers|}}
+    {{#layers.tooltip as |tip|}}
+      This text appears over the tooltipable layer on mouseover. Yields a hash with two properties:
+       - {{tip.feature}}
+       - {{tip.layer}}
+    {{/layers.tooltip}}
+  {{/map}}
+{{/labs-map}}
   ```
 
   Behavior can be overridden with a different component by passing the name of a local component to `labs-layers`.
