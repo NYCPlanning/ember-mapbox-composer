@@ -1,5 +1,5 @@
 {
-  "name": "ember-labs-maps",
+  "name": "ember-mapbox-composer",
   "version": "0.0.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
@@ -77,5 +77,5 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "homepage": "https://NYCPlanning.github.io/ember-labs-maps"
+  "homepage": "https://NYCPlanning.github.io/ember-mapbox-composer"
 }

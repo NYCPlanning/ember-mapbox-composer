@@ -1,4 +1,4 @@
-ember-labs-maps
+ember-mapbox-composer
 ==============================================================================
 
 # Introduction
@@ -590,7 +590,7 @@ Installation
 ------------------------------------------------------------------------------
 
 ```
-ember install ember-labs-maps
+ember install ember-mapbox-composer
 ```
 
 
@@ -606,7 +606,7 @@ Contributing
 ### Installation
 
 * `git clone <repository-url>`
-* `cd ember-labs-maps`
+* `cd ember-mapbox-composer`
 * `npm install`
 
 ### Linting

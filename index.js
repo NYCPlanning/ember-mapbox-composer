@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-labs-maps',
+  name: 'ember-mapbox-composer',
   isDevelopingAddon() {
     return true;
   },
