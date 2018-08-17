@@ -3,11 +3,6 @@
 
 module.exports = function(deployTarget) {
   let ENV = {
-    build: {
-      git: {
-        worktreePath: './ember-mapbox-composer/refactor-for-api'
-      },
-    },
     // include other plugin configuration that applies to all deploy targets here
   };
 
