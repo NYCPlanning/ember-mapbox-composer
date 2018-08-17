@@ -1,0 +1,28 @@
+{{docs-hero
+  logo='ember'
+  slimHeading='Mapbox'
+  strongHeading='Composer'
+  byline='Tools for ambitious mapping applications'}}
+
+{{#labs-map
+  id='main-map'
+  mapLoaded=(action 'mapLoaded')
+  initOptions=initMapOptions as |map|}}
+  {{#map.labs-layers
+    layerGroups=model.layerGroups as |layers|}}
+    {{#layers.tooltip}}
+      Bananas
+    {{/layers.tooltip}}
+  {{/map.labs-layers}}
+{{/labs-map}}
+
+<div class="docs-container docs-md">
+  <section class="max-w-md mx-auto pb-8 leading-loose">
+    {{index-content}}
+    <div class="my-16 text-right">
+      {{#link-to 'docs' class='bg-grey-darkest hover:bg-black text-white py-2 px-4 no-underline rounded'}}
+        Read the docs →
+      {{/link-to}}
+    </div>
+  </section>
+</div>

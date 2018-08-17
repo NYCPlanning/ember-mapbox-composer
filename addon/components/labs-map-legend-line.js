@@ -6,14 +6,14 @@ import layout from '../templates/components/labs-map-legend-line';
 @tagName('svg')
 @classNames('legend-icon', 'line-array')
 export default class LabsMapLegendLineComponent extends Component {
-  layout = layout
+  layout = layout;
+
+  @argument style = {};
 
   @attribute height = 10;
   @attribute width = 17;
   @attribute viewBox = '0 0 17 10';
   @attribute preserveAspectRatio = 'xMinYMid';
-
-  @argument style = {};
 
   didInsertElement() {
     const groupElement = this.element.querySelector('path');

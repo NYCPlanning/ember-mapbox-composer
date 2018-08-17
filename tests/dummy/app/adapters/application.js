@@ -1,14 +1,12 @@
 import DS from 'ember-data';
+import config from '../config/environment';
+
+const { host } = config;
 const { JSONAPIAdapter } = DS;
 
+console.log(host);
+
 export default class ApplicationAdapter extends JSONAPIAdapter {
-  namespace = 'api'
-
-  _ajaxRequest() {
-    if (window.FakeXMLHttpRequest) {
-      window.XMLHttpRequest = window.XMLHttpRequestFake;
-    }
-
-    super._ajaxRequest(...arguments);
-  }
+  host = host;
+  namespace = 'v1';
 }

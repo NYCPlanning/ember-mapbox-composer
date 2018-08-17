@@ -5,11 +5,22 @@ import { alias } from '@ember-decorators/object/computed';
 import { copy } from '@ember/object/internals';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
+import EmberObject from '@ember/object';
 
+/**
+  Model for individual layers. Belongs to a layer-group. May be called individually for state changes.
+
+  @public
+  @class LayerModel
+*/
 export default class LayerModel extends Model.extend({}) {
   constructor(...args) {
     super(...args);
-    if (!this.get('layout')) this.set('layout', {});
+
+    this.set('style', EmberObject.create(this.get('style')));
+
+    if (!this.get('style.layout')) this.set('style.layout', {});
+
     this.delegateVisibility();
     this.addObserver('layerGroup.visible', this, 'delegateVisibility');
   }
@@ -31,24 +42,52 @@ export default class LayerModel extends Model.extend({}) {
   @belongsTo('layer-group') layerGroup
 
   @attr('number', { defaultValue: -1 }) position;
+  @attr('string', { defaultValue: 'boundary_country' }) before
+  @attr('string') displayName;
+  @attr({ defaultValue: () => ({}) }) style
 
+  /**
+    Determines whether to fire mouseover events for the layer.
+    @property highlightable
+    @type Boolean
+  */
+  @attr('boolean', { defaultValue: false }) highlightable;
+
+  /**
+    Determines whether to render positioned tooltip components for the layer.
+    @property tooltipable
+    @type Boolean
+  */
+  @attr('boolean', { defaultValue: false }) tooltipable
+
+  /**
+    Optional template for tooltips. Does not handle any rendering.
+    @property tooltipTemplate
+    @type String
+  */
+  @attr('string', { defaultValue: '' }) tooltipTemplate
+
+  @alias('style.paint') paint;
+  @alias('style.layout') layout;
+  @alias('layerGroup.layerVisibilityType') layerVisibilityType;
+
+
+  /**
+    Computed alias that returns a newly built mapbox layer object. Necessary to maintain state bindings.
+    @property mapboxGlStyle
+    @type Object
+    @private
+  */
   @computed('style.{paint,layout,filter}')
   get mapboxGlStyle() {
     return this.get('style');
   }
 
-  @attr('string', { defaultValue: 'boundary_country' }) before
-
-  @attr('string') displayName;
-
-  @attr({ defaultValue: () => ({}) }) style
-
-  @alias('style.paint') paint;
-
-  @alias('style.layout') layout;
-
-  // getter and setter for filter
-  // accepts array
+  /**
+    Getter and setter for filter. Array structure should follow Mapbox's [Expression](https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions) syntax.
+    @property filter
+    @type Array
+  */
   @computed('style.filter')
   get filter() {
     return this.get('style.filter');
@@ -57,10 +96,12 @@ export default class LayerModel extends Model.extend({}) {
     this.set('style', assign({}, this.get('style'), { filter }));
   }
 
-  // getter and setter for visibility
-  // accepts true or false
-  // mapbox property that actually determines visibility
-  // this also must check that parent visibility is true
+  /** 
+    Getter and setter for visibility. Mutates a Mapbox property that actually determines visibility. Depends on parent visibility.
+
+    @property visibility
+    @type Boolean
+  */
   @computed('layout.visibility')
   get visibility() {
     return this.get('layout.visibility') === 'visible';
@@ -75,12 +116,4 @@ export default class LayerModel extends Model.extend({}) {
       this.set('layout', layout);
     }
   }
-
-  @alias('layerGroup.highlightable') highlightable;
-
-  @alias('layerGroup.layerVisibilityType') layerVisibilityType;
-
-  @attr('boolean', { defaultValue: false }) tooltipable
-
-  @attr('string', { defaultValue: '' }) tooltipTemplate
 }

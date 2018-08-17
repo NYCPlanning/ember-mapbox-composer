@@ -1,5 +1,5 @@
 import { module, test } from 'qunit';
-import { setupRenderingTest, pauseTest } from 'ember-qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import { render, find } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
@@ -38,7 +38,6 @@ module('Integration | Component | labs-map-legend', function(hooks) {
     await render(hbs`{{labs-map-legend model=model}}`);
 
     const tooltip = await find('.tooltip');
-    console.log('tooltip', tooltip)
     assert.equal(!!tooltip, false);
 
   });

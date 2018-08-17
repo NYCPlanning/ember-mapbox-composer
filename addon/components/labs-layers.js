@@ -2,12 +2,56 @@ import Component from '@ember/component';
 import { action, computed } from '@ember-decorators/object';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
-import { alias } from '@ember-decorators/object/computed';
 import { Action } from '@ember-decorators/argument/types';
 import { type } from '@ember-decorators/argument/type';
+import { get } from '@ember/object';
+import ArrayProxy from '@ember/array/proxy';
 import layout from '../templates/components/labs-layers';
 
-export default class MainMapLayersComponent extends Component {
+/**
+  Renders a collection of composer-compatible layer groups.
+  
+  ```js
+  // routes/application.js
+  import Route from '@ember/routing/route';
+
+  export default class ApplicationRoute extends Route {
+    async model() {
+      return [{
+        id: 'roads',
+        layers: [{
+          id: 'highways',
+          style: {
+            type: 'line',
+            paint: {
+              'line-fill': 'orange',
+            },
+          },
+        }, {
+          id: 'streets',
+          style: {
+            type: 'line',
+            paint: {
+              'line-fill': 'blue',
+            },
+          },
+        }]
+      }];
+    }
+  }
+
+  ```
+  ```handlebars
+  {{!-- routes/application.hbs --}}
+  {{#labs-map as |map|}} 
+    {{map.labs-layers layerGroups=model}}
+  {{/labs-map}}
+  ```
+
+  @class LabsLayersComponent
+  @public
+*/
+export default class LayersComponent extends Component {
   constructor(...args) {
     super(...args);
 
@@ -18,17 +62,67 @@ export default class MainMapLayersComponent extends Component {
       .addSource('hovered-feature', this.get('hoveredFeatureSource'));
   }
 
+  layout=layout
+
+  /**
+    Reference to a instance of a MapboxGL map. Handled internally when using contextual components:
+
+    ```
+  {{#labs-map as |map|}}
+    {{map.labs-layers layerGroups=model}}
+  {{/labs-map}}
+    ```
+    @argument map
+    @private
+    @type MapboxGL Map Instance
+  */
+  @required
+  @argument
+  map;
+
+  /**
+    Collection of layer-group objects
+    @argument layerGroups
+    @type Array
+  */
+  @required
+  @argument
+  layerGroups;
+
+  /**
+    Event fired on layer click. Scoped to individual layers. Returns the mouse event and clicked layer.
+    @argument onLayerClick
+    @type Action
+  */
   @argument
   @type(Action)
   onLayerClick = () => {};
 
+  /**
+    Event fired on layer mousemove. Scoped to individual layers. Returns the mouse event and found layer.
+    @argument onLayerMouseMove
+    @type Action
+  */
   @argument
   @type(Action)
   onLayerMouseMove = () => {};
 
+  /**
+    Event fired on layer mouseleave. Scoped to individual layers. Returns the mouse event and found layer.
+    @argument onLayerMouseLeave
+    @type Action
+  */
   @argument
   @type(Action)
   onLayerMouseLeave = () => {};
+
+  /**
+    Name of local component to use in place of default component.
+    @argument toolTipComponent
+    @type String
+  */
+  @argument
+  toolTipComponent = 'labs-layers-tooltip';
 
   @computed('hoveredFeature')
   get hoveredFeatureSource() {
@@ -51,24 +145,19 @@ export default class MainMapLayersComponent extends Component {
     return null;
   }
 
-  layout=layout
+  @computed('layerGroups.@each.layers')
+  get layers() {
+    return ArrayProxy.create({
+      content: this.get('layerGroups')
+        .map((layerGroup) => get(layerGroup, 'layers'))
+        .reduce((accumulator, current) => {
+          const layers = current.toArray();
 
-  @required
-  @argument
-  model;
+          return [...accumulator, ...layers];
+        }, [])
+    });
+  }
 
-  @required
-  @argument
-  map;
-
-  @alias('model.layers')
-  layers;
-
-  @alias('model.sources')
-  sources;
-
-  @argument
-  toolTipComponent = 'labs-layers-tooltip';
   hoveredFeature = null;
   mousePosition = null;
 
@@ -103,6 +192,7 @@ export default class MainMapLayersComponent extends Component {
   handleLayerMouseMove(e) {
     const map = this.get('map');
     const [feature] = e.features;
+
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
 
     const { highlightable, tooltipable } =
