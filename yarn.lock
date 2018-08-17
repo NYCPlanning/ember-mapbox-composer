@@ -1742,7 +1742,7 @@ broccoli-filter@^1.2.2, broccoli-filter@^1.2.3, broccoli-filter@^1.2.4:
     symlink-or-copy "^1.0.1"
     walk-sync "^0.3.1"
 
-broccoli-flatiron@^0.1.2:
+broccoli-flatiron@^0.1.3:
   version "0.1.3"
   resolved "https://registry.yarnpkg.com/broccoli-flatiron/-/broccoli-flatiron-0.1.3.tgz#fc7bd8faf7db429ed7199933aa2ec7ef84a8d943"
   dependencies:
@@ -2428,9 +2428,9 @@ chrome-trace-event@^1.0.0:
   dependencies:
     tslib "^1.9.0"
 
-ci-info@^1.0.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.3.0.tgz#ea8219b0355a58692b762baf1cdd76ceb4503283"
+ci-info@^1.3.0:
+  version "1.3.1"
+  resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-1.3.1.tgz#da21bc65a5f0d0d250c19a169065532b42fa048c"
 
 cipher-base@^1.0.0, cipher-base@^1.0.1, cipher-base@^1.0.3:
   version "1.0.4"
@@ -3780,10 +3780,10 @@ ember-cli@~3.0.2:
     yam "0.0.22"
 
 ember-code-snippet@^2.1.0:
-  version "2.2.1"
-  resolved "https://registry.yarnpkg.com/ember-code-snippet/-/ember-code-snippet-2.2.1.tgz#f4ea7091a424de137833b418473b6f3e0a6a1cd7"
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/ember-code-snippet/-/ember-code-snippet-2.2.2.tgz#2327e105c9101cb02437873c70297bcb365e474a"
   dependencies:
-    broccoli-flatiron "^0.1.2"
+    broccoli-flatiron "^0.1.3"
     broccoli-merge-trees "^1.0.0"
     broccoli-static-compiler "^0.1.4"
     broccoli-writer "^0.1.1"
@@ -5927,10 +5927,10 @@ is-builtin-module@^1.0.0:
     builtin-modules "^1.0.0"
 
 is-ci@^1.0.10:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-1.1.0.tgz#247e4162e7860cebbdaf30b774d6b0ac7dcfe7a5"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/is-ci/-/is-ci-1.2.0.tgz#3f4a08d6303a09882cef3f0fb97439c5f5ce2d53"
   dependencies:
-    ci-info "^1.0.0"
+    ci-info "^1.3.0"
 
 is-data-descriptor@^0.1.4:
   version "0.1.4"
@@ -6975,8 +6975,8 @@ lru-cache@^4.0.1, lru-cache@^4.1.1:
     yallist "^2.1.2"
 
 lunr@^2.1.5:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/lunr/-/lunr-2.3.1.tgz#113616a2b602ddc10932a7bf8a4e6e57ebfecdf2"
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/lunr/-/lunr-2.3.2.tgz#7164301092b2d7ab664573156f686df5c25c4185"
 
 magic-string@^0.22.4:
   version "0.22.5"
@@ -9055,13 +9055,17 @@ semver-diff@^2.0.0:
   dependencies:
     semver "^5.0.3"
 
-"semver@2 || 3 || 4 || 5", semver@^5.0.3, semver@^5.1.0, semver@^5.1.1, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
+"semver@2 || 3 || 4 || 5", semver@^5.1.0, semver@^5.1.1, semver@^5.3.0, semver@^5.4.1, semver@^5.5.0:
   version "5.5.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.0.tgz#dc4bbc7a6ca9d916dee5d43516f0092b58f7b8ab"
 
 semver@5.3.0, semver@~5.3.0:
   version "5.3.0"
   resolved "https://registry.yarnpkg.com/semver/-/semver-5.3.0.tgz#9b2ce5d3de02d17c6012ad326aa6b4d0cf54f94f"
+
+semver@^5.0.3:
+  version "5.5.1"
+  resolved "https://registry.yarnpkg.com/semver/-/semver-5.5.1.tgz#7dfdd8814bdb7cabc7be0fb1d734cfb66c940477"
 
 send@0.16.2:
   version "0.16.2"
