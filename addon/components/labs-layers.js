@@ -124,6 +124,28 @@ export default class LayersComponent extends Component {
   @argument
   toolTipComponent = 'labs-layers-tooltip';
 
+  /**
+    MapboxGL Style object for the hightlighted layer
+    @argument highlightedFeatureLayer
+    @type Object
+  */
+  @argument
+  highlightedFeatureLayer = {
+    id: 'highlighted-feature',
+    type: 'line',
+    source: 'hovered-feature',
+    paint: {
+      'line-color': '#ffff00',
+      'line-opacity': 0.3,
+      'line-width': {
+        stops: [
+          [8, 4],
+          [11, 7],
+        ],
+      },
+    },
+  }
+
   @computed('hoveredFeature')
   get hoveredFeatureSource() {
     const feature = this.get('hoveredFeature');
@@ -160,23 +182,6 @@ export default class LayersComponent extends Component {
 
   hoveredFeature = null;
   mousePosition = null;
-
-  @argument
-  highlightedFeatureLayer = {
-    id: 'highlighted-feature',
-    type: 'line',
-    source: 'hovered-feature',
-    paint: {
-      'line-color': '#ffff00',
-      'line-opacity': 0.3,
-      'line-width': {
-        stops: [
-          [8, 4],
-          [11, 7],
-        ],
-      },
-    },
-  }
 
   @action
   handleLayerMouseClick(e) {
