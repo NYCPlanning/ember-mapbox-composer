@@ -10,7 +10,7 @@ import layout from '../templates/components/labs-layers';
 
 /**
   Renders a collection of composer-compatible layer groups.
-  
+
   ```js
   // routes/application.js
   import Route from '@ember/routing/route';
@@ -43,7 +43,7 @@ import layout from '../templates/components/labs-layers';
   ```
   ```handlebars
   {{!-- routes/application.hbs --}}
-  {{#labs-map as |map|}} 
+  {{#labs-map as |map|}}
     {{map.labs-layers layerGroups=model}}
   {{/labs-map}}
   ```
@@ -115,6 +115,15 @@ export default class LayersComponent extends Component {
   @argument
   @type(Action)
   onLayerMouseLeave = () => {};
+
+  /**
+    Event fired on layer highlight. Returns the id of the layer that is being highlighted.
+    @argument onLayerHighlight
+    @type Action
+  */
+  @argument
+  @type(Action)
+  onLayerHighlight = () => {};
 
   /**
     Name of local component to use in place of default component.
@@ -212,13 +221,30 @@ export default class LayersComponent extends Component {
 
     // if layer is set for this behavior
     if (highlightable || tooltipable) {
-      // set the hovered feature
-      this.setProperties({
-        hoveredFeature: feature,
-        mousePosition: e.point,
-      });
+      const hoveredFeature = this.get('hoveredFeature');
 
-      map.getSource('hovered-feature').setData(feature);
+      let isNew = true;
+      if (!!hoveredFeature) {
+        if ((feature.id === hoveredFeature.id) && (feature.layer.id === hoveredFeature.layer.id)) {
+          isNew = false;
+        }
+      }
+
+      if (isNew) {
+        const highlightEvent = this.get('onLayerHighlight');
+        if (highlightEvent && feature) {
+          // if this is different from the currently highlighted feature
+          highlightEvent(e, foundLayer);
+        }
+
+        // set the hovered feature
+        this.setProperties({
+          hoveredFeature: feature,
+          mousePosition: e.point,
+        });
+
+        map.getSource('hovered-feature').setData(feature);
+      }
       map.getCanvas().style.cursor = 'pointer';
     }
   }
