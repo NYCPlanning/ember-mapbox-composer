@@ -61,6 +61,13 @@ export default class LayerGroupModel extends Model.extend({}) {
     this.get('layers').findBy('id', id).set('visibility', true);
   }
 
+  setPaintForLayer(id, paint) {
+    const foundLayer = this.get('layers').findBy('id', id);
+    if (!foundLayer) throw Error('No related layer with this ID.');
+
+    foundLayer.set('paint', paint);
+  }
+
   showOneLayer(id) {
     this.get('layers').forEach((layer) => {
       if (layer.get('id') === id) {
