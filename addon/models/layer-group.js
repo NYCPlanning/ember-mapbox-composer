@@ -61,6 +61,13 @@ export default class LayerGroupModel extends Model.extend({}) {
     this.get('layers').findBy('id', id).set('visibility', true);
   }
 
+  /**
+    This method finds a related layer and overwrites its paint object
+
+    @method setPaintForLayer
+    @param {String|Number} id ID of the layer-group's layer
+    @param {Object} paint MapboxGL Style object to override
+  */
   setPaintForLayer(id, paint) {
     const foundLayer = this.get('layers').findBy('id', id);
     if (!foundLayer) throw Error('No related layer with this ID.');
