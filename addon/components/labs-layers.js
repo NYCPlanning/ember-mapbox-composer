@@ -224,7 +224,7 @@ export default class LayersComponent extends Component {
       const hoveredFeature = this.get('hoveredFeature');
 
       let isNew = true;
-      if (!!hoveredFeature) {
+      if (hoveredFeature) {
         if ((feature.id === hoveredFeature.id) && (feature.layer.id === hoveredFeature.layer.id)) {
           isNew = false;
         }
