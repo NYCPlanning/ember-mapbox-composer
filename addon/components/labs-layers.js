@@ -9,7 +9,7 @@ import ArrayProxy from '@ember/array/proxy';
 import layout from '../templates/components/labs-layers';
 
 /**
-  Renders a collection of composer-compatible layer groups.
+  Renders a collection of Mapbox Composer-compatible layer groups.
 
   ```js
   // routes/application.js
@@ -48,7 +48,7 @@ import layout from '../templates/components/labs-layers';
   {{/labs-map}}
   ```
 
-  @class LabsLayersComponent
+  @class LayersComponent
   @public
 */
 export default class LayersComponent extends Component {
