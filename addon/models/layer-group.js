@@ -66,15 +66,40 @@ export default class LayerGroupModel extends Model.extend({}) {
 
     @method setPaintForLayer
     @param {String|Number} id ID of the layer-group's layer
-    @param {Object} paint MapboxGL Style object to override
+    @param {Object} paint MapboxGL Style [paint](https://www.mapbox.com/mapbox-gl-js/style-spec/#layer-paint) object to override
   */
-  setPaintForLayer(id, paint) {
-    const foundLayer = this.get('layers').findBy('id', id);
-    if (!foundLayer) throw Error('No related layer with this ID.');
-
-    foundLayer.set('paint', paint);
+  setPaintForLayer(...args) {
+    this._mutateLayerProperty('paint', ...args);
   }
 
+  /**
+    This method finds a related layer and overwrites its filter array
+
+    @method setFilterForLayer
+    @param {String|Number} id ID of the layer-group's layer
+    @param {Object} filter MapboxGL Style [expressions array](https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions) to override
+  */
+  setFilterForLayer(...args) {
+    this._mutateLayerProperty('filter', ...args);
+  }
+
+  /**
+    This method finds a related layer and overwrites its layout object
+
+    @method setLayoutForLayer
+    @param {String|Number} id ID of the layer-group's layer
+    @param {Object} layout MapboxGL Style [layout](https://www.mapbox.com/mapbox-gl-js/style-spec/#layout-property) object to override
+  */
+  setLayoutForLayer(...args) {
+    this._mutateLayerProperty('layout', ...args);
+  }
+
+  /**
+    This method hides all layers and shows only one
+
+    @method showOneLayer
+    @param {String|Number} id ID of the layer-group's layer
+  */
   showOneLayer(id) {
     this.get('layers').forEach((layer) => {
       if (layer.get('id') === id) {
@@ -83,5 +108,21 @@ export default class LayerGroupModel extends Model.extend({}) {
 
       layer.set('layout', {}/* not visible */);
     });
+  }
+
+  /**
+    This method generically mutates a property on a related layer
+
+    @method _mutateLayerProperty
+    @private
+    @param {String|Number} property of the layer-group's layer
+    @param {String|Number} layerID ID of the layer-group's layer
+    @param {Object} value Value of Layer to override
+  */
+  _mutateLayerProperty(property, layerID, value) {
+    const foundLayer = this.get('layers').findBy('id', layerID);
+    if (!foundLayer) throw Error('No related layer with this ID.');
+
+    foundLayer.set(property, value);
   }
 }
