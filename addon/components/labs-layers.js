@@ -84,7 +84,6 @@ export default class LayersComponent extends Component {
     Whether layergroups should have interactivity (highlighting and clicking).  Useful for temporarily disabling interactivity during drawing mode.
 
     @argument interactivity
-    @private
     @type boolean
   */
   @argument
