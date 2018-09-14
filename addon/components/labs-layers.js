@@ -81,6 +81,16 @@ export default class LayersComponent extends Component {
   map;
 
   /**
+    Whether layergroups should have interactivity (highlighting and clicking).  Useful for temporarily disabling interactivity during drawing mode.
+
+    @argument interactivity
+    @private
+    @type boolean
+  */
+  @argument
+  interactivity = true;
+
+  /**
     Collection of layer-group objects
     @argument layerGroups
     @type Array
@@ -195,9 +205,11 @@ export default class LayersComponent extends Component {
   @action
   handleLayerMouseClick(e) {
     const [feature] = e.features;
+    const interactivity = this.get('interactivity');
+
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
     const layerClickEvent = this.get('onLayerClick');
-    if (layerClickEvent && feature) {
+    if ((layerClickEvent && feature) && interactivity) {
       layerClickEvent(feature, foundLayer);
     }
   }
@@ -205,6 +217,8 @@ export default class LayersComponent extends Component {
   @action
   handleLayerMouseMove(e) {
     const map = this.get('map');
+    const interactivity = this.get('interactivity');
+
     const [feature] = e.features;
 
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
@@ -220,7 +234,7 @@ export default class LayersComponent extends Component {
     }
 
     // if layer is set for this behavior
-    if (highlightable || tooltipable) {
+    if ((highlightable || tooltipable) && interactivity) {
       const hoveredFeature = this.get('hoveredFeature');
 
       let isNew = true;
