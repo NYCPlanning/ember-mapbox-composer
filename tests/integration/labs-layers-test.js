@@ -139,4 +139,96 @@ module('Integration | Component | labs-layers', {
     //   'paint property was updated',
     // );
   });
+
+  test('subsequent updates from server are honored', async function(assert) {
+    let store = this.owner.lookup('service:store');
+
+    await run(() =>
+      store.pushPayload('layer', {
+        data: {
+          type: 'layer',
+          id: 'test-layer',
+          attributes: {
+            style: {
+              id: 'u3qfgoljknjklm',
+              type: 'circle',
+              source: {
+                type: 'geojson',
+                data: {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [
+                      -76.53063297271729,
+                      39.18174077994108
+                    ]
+                  }
+                }
+              },
+              paint: {
+                'circle-color': 'white'
+              },
+            }
+          }
+        }
+      }
+    ));
+
+    this.layer = store.peekRecord('layer', 'test-layer');
+
+    this.set('map', this.map);
+    this.set('model', {
+      layerGroups: [
+        {
+          layers: ArrayProxy.create({ content: [this.layer] }),
+        },
+      ],
+    });
+
+    await render(hbs`{{labs-layers layerGroups=model.layerGroups map=map}}`);
+
+    assert.equal(
+      this.map.getPaintProperty(this.layer.get('style.id'), 'circle-color'), 
+      'white', 
+      'paint property was set',
+    );
+
+    await run(() =>
+      store.pushPayload('layer', {
+        data: {
+          type: 'layer',
+          id: 'test-layer',
+          attributes: {
+            style: {
+              id: 'u3qfgoljknjklm',
+              type: 'circle',
+              source: {
+                type: 'geojson',
+                data: {
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [
+                      -76.53063297271729,
+                      39.18174077994108
+                    ]
+                  }
+                }
+              },
+              paint: {
+                'circle-color': 'black'
+              },
+            }
+          }
+        }
+      }
+    ));
+
+    assert.equal(
+      this.map.getPaintProperty(this.layer.get('style.id'), 'circle-color'), 
+      'black', 
+      'paint property was updated from server',
+    );
+
+  });
 });
