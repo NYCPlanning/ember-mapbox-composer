@@ -5,7 +5,6 @@ import { alias } from '@ember-decorators/object/computed';
 import { copy } from '@ember/object/internals';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
-import EmberObject from '@ember/object';
 
 /**
   Model for individual layers. Belongs to a layer-group. May be called individually for state changes.
@@ -16,8 +15,6 @@ import EmberObject from '@ember/object';
 export default class LayerModel extends Model.extend({}) {
   constructor(...args) {
     super(...args);
-
-    this.set('style', EmberObject.create(this.get('style')));
 
     if (!this.get('style.layout')) this.set('style.layout', {});
 
@@ -44,7 +41,7 @@ export default class LayerModel extends Model.extend({}) {
   @attr('number', { defaultValue: -1 }) position;
   @attr('string', { defaultValue: 'boundary_country' }) before
   @attr('string') displayName;
-  @attr({ defaultValue: () => ({}) }) style
+  @attr('hash', { defaultValue: () => ({}) }) style
 
   /**
     Determines whether to fire mouseover events for the layer.
