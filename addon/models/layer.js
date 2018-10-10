@@ -2,7 +2,7 @@ import Model from 'ember-data/model';
 import { computed } from '@ember-decorators/object';
 import { attr, belongsTo } from '@ember-decorators/data';
 import { alias } from '@ember-decorators/object/computed';
-import { copy } from '@ember/object/internals';
+import { copy } from 'ember-copy';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
 

@@ -1,6 +1,6 @@
 {
   "name": "ember-mapbox-composer",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"
@@ -54,6 +54,7 @@
     "ember-cli-sri": "^2.1.0",
     "ember-cli-tailwind": "0.6.0",
     "ember-cli-uglify": "^2.0.0",
+    "ember-copy": "1.0.0",
     "ember-data": "3.0.0",
     "ember-decorators": "2.1.0",
     "ember-disable-prototype-extensions": "^1.1.2",
