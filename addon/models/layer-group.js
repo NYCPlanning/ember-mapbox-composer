@@ -135,4 +135,13 @@ export default class LayerGroupModel extends Model.extend({}) {
 
     foundLayer.set(property, value);
   }
+
+  /**
+    Internal for determining first occurence of a layer
+
+    @property _firstOccurringLayer
+    @type Number
+    @private
+  */
+  _firstOccurringLayer = null;
 }

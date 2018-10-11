@@ -16,7 +16,15 @@ export default class LayerModel extends Model.extend({}) {
   constructor(...args) {
     super(...args);
 
+    // enforce presence of blank object for mapboxGL validation
     if (!this.get('style.layout')) this.set('style.layout', {});
+
+    // determine which is the first occurring layer
+    // for testing, should check that a related layer group exists
+    if (this.get('layerGroup') && !this.get('layerGroup._firstOccurringLayer')) {
+      this.set('layerGroup._firstOccurringLayer', this.get('id'));
+      this.set('position', 1);
+    }
 
     this.delegateVisibility();
     this.addObserver('layerGroup.visible', this, 'delegateVisibility');
@@ -36,7 +44,7 @@ export default class LayerModel extends Model.extend({}) {
     }
   }
 
-  @belongsTo('layer-group') layerGroup
+  @belongsTo('layer-group', { async: false }) layerGroup
 
   @attr('number', { defaultValue: -1 }) position;
   @attr('string', { defaultValue: 'boundary_country' }) before
