@@ -1,6 +1,6 @@
 import Model from 'ember-data/model';
 import { attr, hasMany } from '@ember-decorators/data';
-import { mapBy } from '@ember-decorators/object/computed';
+import { mapBy, alias } from '@ember-decorators/object/computed';
 import { computed } from '@ember-decorators/object';
 
 /**
@@ -42,6 +42,16 @@ export default class LayerGroupModel extends Model.extend({}) {
   @attr('string') legendColor
   @attr('string') meta
   @attr() legendConfig
+
+  /**
+    A JSON object containing any number of keys and values to store metadata.
+
+    @property meta
+    @type Object
+  */
+  @attr() meta
+  @attr() legend
+  @alias('legend.label') title
 
   /**
     Convenience property for a list of internal MapboxGL layer IDs. 
@@ -125,4 +135,13 @@ export default class LayerGroupModel extends Model.extend({}) {
 
     foundLayer.set(property, value);
   }
+
+  /**
+    Internal for determining first occurence of a layer
+
+    @property _firstOccurringLayer
+    @type Number
+    @private
+  */
+  _firstOccurringLayer = null;
 }
