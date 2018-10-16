@@ -1,20 +1,26 @@
+<p class="text-xl leading-normal lg:font-light lg:text-2xl mt-8 lg:-mr-8 lg:-ml-8 lg:text-justify">Ambitious mapping applications involve many map layers whose state can be changed through an API, user interaction, or query parameters. Mapbox Composer is a set of Ember models and components that make it easier to manage the state of layers without losing the flexibility of Mapbox GL.</p>
+
+## Query for layers from from a JSON:API endpoint
+
 ```javascript
 export default class ApplicationRoute extends Route {
   model() {
-    return this.store.query('layer-group'); // query for layers from from a JSON:API endpoint
+    return this.store.query('layer-group');
   }
 }
 ```
 
+## Map and manage those layers as a regular `mapbox-gl` map
+
 ```handlebars
-{{!-- Map and manage those layers --}}
 {{#labs-map layerGroups=model as |map|}}
   {{!-- Add sources as you would with any `mapbox-gl` map --}}
 {{/labs-map}}
 ```
 
+## Control `layerGroups` as Ember Data models from anywhere in your application
+
 ```javascript
-// control layerGroups as Ember Data models from anywhere in your application
 export default class ToggleComponent extends Component {
   @argument
   @required
@@ -26,8 +32,6 @@ export default class ToggleComponent extends Component {
   }
 }
 ```
-
-<p class="text-xl leading-normal lg:font-light lg:text-2xl mt-8 lg:-mr-8 lg:-ml-8 lg:text-justify">Ambitious mapping applications involve many map layers whose state can be changed through an API, user interaction, or query parameters. Mapbox Composer is a set of Ember models and components that make it easier to manage the state of layers without losing the flexibility of Mapbox GL.</p>
 
 ## Background
 NYC Planning Labs builds a [lot of mapping applications](https://planninglabs.nyc/projects/). These maps are often complicated and require the ability to show or hide groups of multiple layers. Configuration data for layers and their sources can growing unwieldy. It can be complicated to add new layers and difficult to migrate configuration between projects. Mapbox Composer was designed as a better, more reusable way to work with groups of map layers.
