@@ -1,3 +1,32 @@
+```javascript
+export default class ApplicationRoute extends Route {
+  model() {
+    return this.store.query('layer-group'); // query for layers from from a JSON:API endpoint
+  }
+}
+```
+
+```handlebars
+{{!-- Map and manage those layers --}}
+{{#labs-map layerGroups=model as |map|}}
+  {{!-- Add sources as you would with any `mapbox-gl` map --}}
+{{/labs-map}}
+```
+
+```javascript
+// control layerGroups as Ember Data models from anywhere in your application
+export default class ToggleComponent extends Component {
+  @argument
+  @required
+  layerGroupModel;
+
+  @action
+  toggleVisibility() {
+    this.get('layerGroupModel').toggleProperty('visible');
+  }
+}
+```
+
 <p class="text-xl leading-normal lg:font-light lg:text-2xl mt-8 lg:-mr-8 lg:-ml-8 lg:text-justify">Ambitious mapping applications involve many map layers whose state can be changed through an API, user interaction, or query parameters. Mapbox Composer is a set of Ember models and components that make it easier to manage the state of layers without losing the flexibility of Mapbox GL.</p>
 
 ## Background
