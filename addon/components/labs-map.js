@@ -6,9 +6,13 @@ export default class MainMapComponent extends mapboxGlMap {
   constructor(...args) {
     super(...args);
 
-    const { meta: { mapboxStyle } } = this.get('layerGroups') || {};
+    // if layerGroups are passed to the map, use the style from that
+    if (this.get('layerGroups')) {
+      const { meta: { mapboxStyle } } = this.get('layerGroups') || {};
 
-    if (mapboxStyle) this.set('initOptions.style', mapboxStyle);
+      if (mapboxStyle) this.set('initOptions.style', mapboxStyle);
+    }
+
   }
 
   layout = layout;
