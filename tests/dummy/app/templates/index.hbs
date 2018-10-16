@@ -7,9 +7,9 @@
 {{#labs-map
   id='main-map'
   mapLoaded=(action 'mapLoaded')
+  layerGroups=model
   initOptions=initMapOptions as |map|}}
-  {{#map.labs-layers
-    layerGroups=model as |layers|}}
+  {{#map.labs-layers as |layers|}}
     {{#layers.tooltip}}
       Bananas
     {{/layers.tooltip}}

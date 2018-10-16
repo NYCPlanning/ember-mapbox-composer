@@ -12,7 +12,6 @@ export default Controller.extend({
       zoom,
       pitch,
       bearing,
-      style: this.get('model.meta.mapboxStyle'),
     };
   }),
 
