@@ -14,7 +14,7 @@ export default class ApplicationRoute extends Route {
 
 ```handlebars
 {{#labs-map layerGroups=model as |map|}}
-  {{!-- Add sources as you would with any `mapbox-gl` map --}}
+  {{!-- Add other features as you would with any `mapbox-gl` map --}}
 {{/labs-map}}
 ```
 
