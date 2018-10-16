@@ -29,7 +29,7 @@
     "ember-decorators": "2.1.0",
     "ember-fetch": "4.0.2",
     "ember-font-awesome": "^4.0.0-rc.2",
-    "ember-mapbox-gl": "0.10.0",
+    "ember-mapbox-gl": "0.12.0",
     "ember-truth-helpers": "2.0.0",
     "pretender": "2.0.0"
   },
