@@ -2,7 +2,6 @@ import mapboxGlMap from 'ember-mapbox-gl/components/mapbox-gl';
 import { argument } from '@ember-decorators/argument';
 import layout from '../templates/components/labs-map';
 
-
 /**
   Extends `mapbox-gl` component to yield `labs-layers` contextual component. Allows passage of layer-groups.
 
@@ -15,7 +14,6 @@ import layout from '../templates/components/labs-map';
       return this.store.query('layer-group');
     }
   }
-
   ```
   ```handlebars
   {{!-- routes/application.hbs --}}
@@ -25,7 +23,7 @@ import layout from '../templates/components/labs-map';
   @class LabsMapComponent
   @public
 */
-export default class MainMapComponent extends mapboxGlMap {
+export default class LabsMapComponent extends mapboxGlMap {
   constructor(...args) {
     super(...args);
 
@@ -35,7 +33,6 @@ export default class MainMapComponent extends mapboxGlMap {
 
       if (mapboxStyle) this.set('initOptions.style', mapboxStyle);
     }
-
   }
 
   layout = layout;
@@ -44,7 +41,7 @@ export default class MainMapComponent extends mapboxGlMap {
     Collection of layer-group models (see: [DS.RecordArray](https://emberjs.com/api/ember-data/release/classes/DS.RecordArray)).
     Allows optional `meta` object with a `mapboxStyle` property which is passed to the mapbox-gl instance.
     @argument layerGroups
-    @type DS.RecordArray
+    @type Array
   */
   @argument
   layerGroups = null;
