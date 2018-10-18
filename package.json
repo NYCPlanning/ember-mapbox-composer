@@ -30,6 +30,7 @@
     "ember-fetch": "5.1.3",
     "ember-font-awesome": "^4.0.0-rc.2",
     "ember-mapbox-gl": "0.12.0",
+    "mapbox-gl", "0.47.0",
     "ember-truth-helpers": "2.0.0",
     "pretender": "2.0.0"
   },
