@@ -3,9 +3,10 @@ import { argument } from '@ember-decorators/argument';
 import { tagName, classNames, attribute } from '@ember-decorators/component';
 import layout from '../templates/components/labs-map-legend-point';
 
+export default 
 @tagName('svg')
 @classNames('legend-icon', 'line-array')
-export default class LabsMapLegendPointComponent extends Component {
+class LabsMapLegendPointComponent extends Component {
   layout = layout;
 
   @argument style = {};
