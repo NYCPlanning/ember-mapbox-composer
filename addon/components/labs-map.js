@@ -1,7 +1,8 @@
 import mapboxGlMap from 'ember-mapbox-gl/components/mapbox-gl';
 import { argument } from '@ember-decorators/argument';
+import { assign } from '@ember/polyfills';
+import { get } from '@ember/object';
 import layout from '../templates/components/labs-map';
-
 
 /**
   Extends `mapbox-gl` component to yield `labs-layers` contextual component. Allows passage of layer-groups.
@@ -26,14 +27,18 @@ import layout from '../templates/components/labs-map';
   @public
 */
 export default class MainMapComponent extends mapboxGlMap {
-  constructor(...args) {
-    super(...args);
+  init(...args) {
+    super.init(...args);
 
     // if layerGroups are passed to the map, use the style from that
     if (this.get('layerGroups')) {
-      const { meta: { mapboxStyle } } = this.get('layerGroups') || {};
+      const { 
+        meta: {
+          mapboxStyle 
+        } 
+      } = this.get('layerGroups') || {};
 
-      if (mapboxStyle) this.set('initOptions.style', mapboxStyle);
+      if (mapboxStyle) assign(get(this, 'initOptions') || {}, { style: mapboxStyle });
     }
 
   }
