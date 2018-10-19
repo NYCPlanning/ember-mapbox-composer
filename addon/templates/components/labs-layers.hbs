@@ -8,8 +8,10 @@
       eventSource=map}}
   {{/if}}
 
-  {{mapbox-gl-on 'click' layerObject.mapboxGlStyle.id (action 'handleLayerMouseClick')
-    eventSource=map}}
+  {{#if layerObject.clickable}}
+    {{mapbox-gl-on 'click' layerObject.mapboxGlStyle.id (action 'handleLayerMouseClick')
+      eventSource=map}}
+  {{/if}}
 
   {{mapbox-gl-layer
     map=map
