@@ -59,6 +59,13 @@ export default class LayerModel extends Model.extend({}) {
   @attr('boolean', { defaultValue: false }) highlightable;
 
   /**
+    Determines whether to fire click events for the layer.
+    @property clickable
+    @type Boolean
+  */
+  @attr('boolean', { defaultValue: false }) clickable;
+
+  /**
     Determines whether to render positioned tooltip components for the layer.
     @property tooltipable
     @type Boolean
