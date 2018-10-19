@@ -2,21 +2,29 @@ import Model from 'ember-data/model';
 import { attr, hasMany } from '@ember-decorators/data';
 import { mapBy, alias } from '@ember-decorators/object/computed';
 import { computed } from '@ember-decorators/object';
+import { service } from '@ember-decorators/service';
 
 /**
-  Model for layer groups. 
-  Describes a collection of layers which are references here as a has-many relationship. 
-  Delegates state of certain properties, like visiblity, to child layers. 
+  Model for layer groups.
+  Describes a collection of layers which are references here as a has-many relationship.
+  Delegates state of certain properties, like visiblity, to child layers.
   Includes other helpful metadata.
 
   @public
   @class LayerModel
 */
 export default class LayerGroupModel extends Model.extend({}) {
+  init(...args) {
+    this._super(...args);
+
+    // update registry for aggregate state service
+    this.set('layerGroupService.layerGroupRegistry', this.get('layerGroupService.layerGroupRegistry').concat(this));
+  }
+
   @hasMany('layer', { async: false }) layers
 
   /**
-    Abstraction for the visibility state of related layers. Mutations will fire updates to child layers. 
+    Abstraction for the visibility state of related layers. Mutations will fire updates to child layers.
     Simple modifies a property of the MapboxGL `layout` style property. Does not add or remove layers.
 
     @property visible
@@ -54,7 +62,7 @@ export default class LayerGroupModel extends Model.extend({}) {
   @alias('legend.label') title
 
   /**
-    Convenience property for a list of internal MapboxGL layer IDs. 
+    Convenience property for a list of internal MapboxGL layer IDs.
 
     @property layerIds
     @type Array
@@ -144,4 +152,7 @@ export default class LayerGroupModel extends Model.extend({}) {
     @private
   */
   _firstOccurringLayer = null;
+
+  @service('layerGroups')
+  layerGroupService
 }
