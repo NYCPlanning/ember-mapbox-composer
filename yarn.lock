@@ -601,7 +601,18 @@
     lodash "^4.17.10"
     to-fast-properties "^2.0.0"
 
-"@ember-decorators/argument@0.8.15", "@ember-decorators/argument@^0.8.13":
+"@ember-decorators/argument@0.8.21":
+  version "0.8.21"
+  resolved "https://registry.yarnpkg.com/@ember-decorators/argument/-/argument-0.8.21.tgz#929789f9622ee935c3fad3332b3d179e98d05b15"
+  dependencies:
+    babel-plugin-filter-imports "^1.1.1"
+    broccoli-funnel "^2.0.1"
+    ember-cli-babel "^6.17.0"
+    ember-cli-version-checker "^2.0.0"
+    ember-compatibility-helpers "^1.0.2"
+    ember-get-config "^0.2.3"
+
+"@ember-decorators/argument@^0.8.13":
   version "0.8.15"
   resolved "https://registry.yarnpkg.com/@ember-decorators/argument/-/argument-0.8.15.tgz#9b0be4b8ca362a9fb79af0bad5249575a2cbd6fa"
   dependencies:
@@ -4021,7 +4032,7 @@ ember-cli-babel@^6.0.0, ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.0.0-be
     ember-cli-version-checker "^2.1.0"
     semver "^5.4.1"
 
-ember-cli-babel@^6.16.0:
+ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0:
   version "6.17.2"
   resolved "https://registry.yarnpkg.com/ember-cli-babel/-/ember-cli-babel-6.17.2.tgz#f0d53d2fb95e70c15d8db84760d045f88f458f69"
   dependencies:
@@ -4505,7 +4516,7 @@ ember-compatibility-helpers@^1.0.0, ember-compatibility-helpers@^1.0.0-beta.2:
     ember-cli-version-checker "^2.1.1"
     semver "^5.4.1"
 
-ember-compatibility-helpers@^1.1.1:
+ember-compatibility-helpers@^1.0.2, ember-compatibility-helpers@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/ember-compatibility-helpers/-/ember-compatibility-helpers-1.1.2.tgz#ae0ee4a7a2858b5ffdf79b428c23aee85c47d93d"
   dependencies:
