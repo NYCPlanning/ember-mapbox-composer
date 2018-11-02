@@ -3,11 +3,9 @@
   {{#if map}}
 
     {{!-- Highlighted Layer Handling --}}
-    {{#if hoveredFeature}}
-      {{mapbox-gl-layer
-        map=map
-        layer=highlightedFeatureLayer}}
-    {{/if}}
+    {{mapbox-gl-layer
+      map=map
+      layer=highlightedFeatureLayer}}
 
     {{yield (hash
       mapInstance=map
