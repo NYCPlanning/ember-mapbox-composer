@@ -22,5 +22,11 @@
     "name": "v0.0.18",
     "sha": "f6a308fc80cb32d196f27d15f94c52d328484f4e",
     "tag": "v0.0.18"
+  },
+  "refactor-highlighted-source": {
+    "path": "versions/refactor-highlighted-source",
+    "name": "refactor-highlighted-source",
+    "sha": "27421334b650cb9e1384edc4781f1e86c2ca4e78",
+    "tag": null
   }
 }
