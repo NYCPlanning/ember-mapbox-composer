@@ -52,16 +52,6 @@ import layout from '../templates/components/labs-layers';
   @public
 */
 export default class LayersComponent extends Component {
-  constructor(...args) {
-    super(...args);
-
-    const map = this.get('map');
-
-    // add source for highlighted-feature
-    map
-      .addSource('hovered-feature', this.get('hoveredFeatureSource'));
-  }
-
   layout=layout
 
   /**
@@ -142,36 +132,9 @@ export default class LayersComponent extends Component {
   @argument
   toolTipComponent = 'labs-layers-tooltip';
 
-  /**
-    MapboxGL Style object for the hightlighted layer
-    @argument highlightedFeatureLayer
-    @type Object
-  */
-  @argument
-  highlightedFeatureLayer = {
-    id: 'highlighted-feature',
-    type: 'line',
-    source: 'hovered-feature',
-    paint: {
-      'line-color': '#ffff00',
-      'line-opacity': 0.3,
-      'line-width': {
-        stops: [
-          [8, 4],
-          [11, 7],
-        ],
-      },
-    },
-  }
 
-  @computed('hoveredFeature')
-  get hoveredFeatureSource() {
-    const feature = this.get('hoveredFeature');
-    return {
-      type: 'geojson',
-      data: feature,
-    };
-  }
+  @argument
+  hoveredFeature;
 
   @computed('hoveredFeature')
   get hoveredLayer() {
@@ -198,7 +161,6 @@ export default class LayersComponent extends Component {
     });
   }
 
-  hoveredFeature = null;
   mousePosition = null;
 
   @action
@@ -218,7 +180,7 @@ export default class LayersComponent extends Component {
     const map = this.get('map');
     const interactivity = this.get('interactivity');
 
-    const [feature] = e.features;
+    const { features: [feature] } = e;
 
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
 

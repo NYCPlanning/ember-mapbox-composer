@@ -13,12 +13,10 @@ import { copy } from 'ember-copy';
 export default class LayerGroupService extends Service {
   init(...args) {
     super.init(...args);
-    // this.set('layerGroupRegistry', []);
-    // this.set('visibleLayerGroups', []);
-  }
 
-  layerGroupRegistry = A([]);
-  visibleLayerGroups = A([]);
+    this.set('layerGroupRegistry', A([]));
+    this.set('visibleLayerGroups', A([]));
+  }
 
   /**
     initializeObservers
@@ -58,6 +56,9 @@ export default class LayerGroupService extends Service {
       });
     }
 
+    this._modelsToParams();
+    this._paramsToModels();
+
     this.addObserver('layerGroupRegistry.@each.selected', this, '_modelsToParams');
     this.addObserver('layerGroupRegistry.@each.visible', this, '_modelsToParams');
     this.addObserver('visibleLayerGroups.length', this, '_paramsToModels');
@@ -69,7 +70,7 @@ export default class LayerGroupService extends Service {
 
     // calculate new param state object
     const newParams = layerGroups
-      .filterBy('visible')
+      .filter(layerGroup => layerGroup.get('visible'))
       .map((layerGroup) => {
         if (layerGroup.get('layerVisibilityType') === 'singleton') {
           return { id: layerGroup.get('id'), selected: layerGroup.get('selected.id') };
@@ -79,7 +80,7 @@ export default class LayerGroupService extends Service {
       }).sort();
 
     // set the new param state object
-    this.set('visibleLayerGroups', newParams)
+    this.set('visibleLayerGroups', newParams);
   }
 
   // translate param state object to model state

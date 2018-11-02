@@ -20,13 +20,6 @@
   }}
 {{/each}}
 
-{{!-- Highlighted Layer Handling --}}
-{{#if hoveredFeature}}
-  {{mapbox-gl-layer
-    map=map
-    layer=highlightedFeatureLayer}}
-{{/if}}
-
 {{yield (hash
   tooltip=(if (and hoveredFeature hoveredLayer.tooltipable)
     (component toolTipComponent
