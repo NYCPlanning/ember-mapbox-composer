@@ -1,4 +1,4 @@
-import { module, test, skip } from 'qunit';
+import { module, test } from 'qunit';
 import { run } from '@ember/runloop';
 import { setupTest } from 'ember-qunit';
 

@@ -5,6 +5,7 @@ import { required } from '@ember-decorators/argument/validation';
 import { Action } from '@ember-decorators/argument/types';
 import { type } from '@ember-decorators/argument/type';
 import { get } from '@ember/object';
+import turfUnion from '@turf/union';
 import ArrayProxy from '@ember/array/proxy';
 import layout from '../templates/components/labs-layers';
 
@@ -196,11 +197,27 @@ export default class LayersComponent extends Component {
 
     // if layer is set for this behavior
     if ((highlightable || tooltipable) && interactivity) {
-      const hoveredFeature = this.get('hoveredFeature');
+      // only stitch if it's for highlighting
 
+      // query for features of a given source
+      const featureFragments = map
+        .querySourceFeatures(feature.layer.source, {
+          sourceLayer: feature.layer['source-layer'], 
+          filter: ['==', 'id', feature.properties.id] 
+        })
+        .map(({ geometry }) => ({ type: 'Feature', properties: {}, geometry }));
+
+      const { geometry } = featureFragments
+        .reduce((acc, curr) => {
+          return turfUnion(curr, (acc ? acc : curr));
+        }, null);
+
+      feature.geometry = geometry;
+
+      const hoveredFeature = this.get('hoveredFeature');
       let isNew = true;
       if (hoveredFeature) {
-        if ((feature.id === hoveredFeature.id) && (feature.layer.id === hoveredFeature.layer.id)) {
+        if ((feature.properties.id === hoveredFeature.properties.id) && (feature.layer.id === hoveredFeature.layer.id)) {
           isNew = false;
         }
       }

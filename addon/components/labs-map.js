@@ -61,7 +61,6 @@ export default class MainMapComponent extends mapboxGlMap {
 
   layout = layout;
 
-
   @computed('hoveredFeature')
   get hoveredFeatureSource() {
     const feature = this.get('hoveredFeature');
