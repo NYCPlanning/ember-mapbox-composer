@@ -5,8 +5,11 @@ import { required } from '@ember-decorators/argument/validation';
 import { Action } from '@ember-decorators/argument/types';
 import { type } from '@ember-decorators/argument/type';
 import { get } from '@ember/object';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { timeout } from 'ember-concurrency';
 import turfUnion from '@turf/union';
 import ArrayProxy from '@ember/array/proxy';
+import { warn } from '@ember/debug';
 import layout from '../templates/components/labs-layers';
 
 /**
@@ -165,19 +168,28 @@ export default class LayersComponent extends Component {
   mousePosition = null;
 
   @action
-  handleLayerMouseClick(e) {
-    const [feature] = e.features;
+  async handleLayerMouseClick(e) {
+    // TODO: stitch clicked feature
+    const { features: [feature] } = e;
     const interactivity = this.get('interactivity');
 
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
     const layerClickEvent = this.get('onLayerClick');
+
     if ((layerClickEvent && feature) && interactivity) {
+      try {
+        const { geometry } = await this.get('stitchHoveredTiles').perform(feature);
+        feature.geometry = geometry;
+      } 
+      catch (e) {
+        // do nothing
+      }
       layerClickEvent(feature, foundLayer);
     }
   }
 
   @action
-  handleLayerMouseMove(e) {
+  async handleLayerMouseMove(e) {
     const map = this.get('map');
     const interactivity = this.get('interactivity');
 
@@ -197,23 +209,6 @@ export default class LayersComponent extends Component {
 
     // if layer is set for this behavior
     if ((highlightable || tooltipable) && interactivity) {
-      // only stitch if it's for highlighting
-
-      // query for features of a given source
-      const featureFragments = map
-        .querySourceFeatures(feature.layer.source, {
-          sourceLayer: feature.layer['source-layer'], 
-          filter: ['==', 'id', feature.properties.id] 
-        })
-        .map(({ geometry }) => ({ type: 'Feature', properties: {}, geometry }));
-
-      const { geometry } = featureFragments
-        .reduce((acc, curr) => {
-          return turfUnion(curr, (acc ? acc : curr));
-        }, null);
-
-      feature.geometry = geometry;
-
       const hoveredFeature = this.get('hoveredFeature');
       let isNew = true;
       if (hoveredFeature) {
@@ -229,6 +224,16 @@ export default class LayersComponent extends Component {
           highlightEvent(e, foundLayer);
         }
 
+        // only stitch if it's for highlighting and new
+        // query for features of a given source
+        try {
+          const { geometry } = await this.get('stitchHoveredTiles').perform(feature);
+          feature.geometry = geometry;
+        } 
+        catch (e) {
+          // do nothing
+        }
+
         // set the hovered feature
         this.setProperties({
           hoveredFeature: feature,
@@ -236,9 +241,39 @@ export default class LayersComponent extends Component {
         });
 
         map.getSource('hovered-feature').setData(feature);
+        map.setLayoutProperty('highlighted-feature', 'visibility', 'visible');
       }
+
       map.getCanvas().style.cursor = 'pointer';
     }
+  }
+
+  @restartableTask()
+  stitchHoveredTiles = function*(feature) {
+    const map = this.get('map');
+
+    yield timeout(5);
+
+    warn(`Missing ID in properties for ${feature.layer.source}`, feature.properties.id, { 
+      id: 'ember-mapbox-composer.id-missing' 
+    });
+
+    // require an id for stitching
+    if (!feature.properties.id) this.cancel();
+
+    // query for features by source
+    const featureFragments = map
+      .querySourceFeatures(feature.layer.source, {
+        sourceLayer: feature.layer['source-layer'], 
+        filter: ['==', 'id', feature.properties.id],
+      })
+      .map(({ geometry }) => ({ type: 'Feature', properties: {}, geometry }));
+
+    // we don't need to union if they are split apart
+    if (featureFragments.length === 1) return feature;
+
+    return featureFragments
+      .reduce((acc, curr) => turfUnion(curr, (acc ? acc : curr)));
   }
 
   @action
@@ -252,7 +287,10 @@ export default class LayersComponent extends Component {
       mousePosition: null,
     });
 
+    map.setLayoutProperty('highlighted-feature', 'visibility', 'none');
+
     const mouseLeaveEvent = this.get('onLayerMouseLeave');
+
     if (mouseLeaveEvent) {
       mouseLeaveEvent();
     }
