@@ -269,7 +269,7 @@ export default class LayersComponent extends Component {
       })
       .map(({ geometry }) => ({ type: 'Feature', properties: {}, geometry }));
 
-    // we don't need to union if they are split apart
+    // we don't need to union if there is only one
     if (featureFragments.length === 1) return feature;
 
     return featureFragments
