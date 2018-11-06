@@ -1,8 +1,5 @@
 import Component from '@ember/component';
 import { computed } from '@ember-decorators/object';
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
 import { htmlSafe } from '@ember/string';
 import layout from '../templates/components/labs-layers-tooltip';
 
@@ -76,7 +73,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @argument offset
     @type Number
   */
-  @argument
   offset = 20;
 
   /**
@@ -84,9 +80,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @argument top
     @type Number
   */
-  @required
-  @argument
-  @type('number')
   top = 0;
 
   /**
@@ -94,9 +87,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @argument left
     @type Number
   */
-  @required
-  @argument
-  @type('number')
   left = 0;
 
   /**
@@ -105,7 +95,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @type Object
     @private
   */
-  @argument
   feature;
 
   /**
@@ -114,6 +103,5 @@ export default class LabsLayersTooltipComponent extends Component {
     @type Object
     @private
   */
-  @argument
   layer;
 }

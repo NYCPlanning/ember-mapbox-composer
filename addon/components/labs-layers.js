@@ -1,9 +1,5 @@
 import Component from '@ember/component';
 import { action, computed } from '@ember-decorators/object';
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { Action } from '@ember-decorators/argument/types';
-import { type } from '@ember-decorators/argument/type';
 import { get } from '@ember/object';
 import { restartableTask } from 'ember-concurrency-decorators';
 import { timeout } from 'ember-concurrency';
@@ -70,8 +66,6 @@ export default class LayersComponent extends Component {
     @private
     @type MapboxGL Map Instance
   */
-  @required
-  @argument
   map;
 
   /**
@@ -80,7 +74,6 @@ export default class LayersComponent extends Component {
     @argument interactivity
     @type boolean
   */
-  @argument
   interactivity = true;
 
   /**
@@ -88,8 +81,6 @@ export default class LayersComponent extends Component {
     @argument layerGroups
     @type Array
   */
-  @required
-  @argument
   layerGroups;
 
   /**
@@ -97,8 +88,6 @@ export default class LayersComponent extends Component {
     @argument onLayerClick
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerClick = () => {};
 
   /**
@@ -106,8 +95,6 @@ export default class LayersComponent extends Component {
     @argument onLayerMouseMove
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerMouseMove = () => {};
 
   /**
@@ -115,8 +102,6 @@ export default class LayersComponent extends Component {
     @argument onLayerMouseLeave
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerMouseLeave = () => {};
 
   /**
@@ -124,8 +109,6 @@ export default class LayersComponent extends Component {
     @argument onLayerHighlight
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerHighlight = () => {};
 
   /**
@@ -133,11 +116,9 @@ export default class LayersComponent extends Component {
     @argument toolTipComponent
     @type String
   */
-  @argument
   toolTipComponent = 'labs-layers-tooltip';
 
 
-  @argument
   hoveredFeature;
 
   @computed('hoveredFeature')

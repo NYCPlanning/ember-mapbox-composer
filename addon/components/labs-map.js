@@ -1,5 +1,4 @@
 import mapboxGlMap from 'ember-mapbox-gl/components/mapbox-gl';
-import { argument } from '@ember-decorators/argument';
 import { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
 import { computed } from '@ember-decorators/object';
@@ -77,7 +76,6 @@ export default class MainMapComponent extends mapboxGlMap {
     @argument highlightedFeatureLayer
     @type Object
   */
-  @argument
   highlightedFeatureLayer = highlightedFeatureLayer;
 
   /**
@@ -86,7 +84,6 @@ export default class MainMapComponent extends mapboxGlMap {
     @argument layerGroups
     @type DS.RecordArray
   */
-  @argument
   layerGroups = null;
 
   _onLoad(map, ...args) {
