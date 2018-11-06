@@ -69,11 +69,13 @@
     "jsonapi-serializer": "3.5.6",
     "loader.js": "^4.2.3",
     "mapbox-gl": ">=^0.47.0",
+    "@turf/union": ">=^6.0.0",
     "pretender": "2.0.0"
   },
   "peerDependencies": {
     "ember-mapbox-gl": ">=0.12.0",
-    "mapbox-gl": ">=0.47.0"
+    "mapbox-gl": ">=0.47.0",
+    "@turf/union": ">=^6.0.0"
   },
   "engines": {
     "node": "^4.5 || 6.* || >= 7.*"
