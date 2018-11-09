@@ -248,10 +248,11 @@ export default class LayersComponent extends Component {
         sourceLayer: feature.layer['source-layer'], 
         filter: ['==', 'id', feature.properties.id],
       })
-      .map(({ geometry }) => ({ type: 'Feature', properties: {}, geometry }));
+      .map(({ geometry, properties }) => ({ type: 'Feature', properties, geometry }));
 
     // we don't need to union if there is only one
-    if (featureFragments.length === 1) return feature;
+    // we also don't want to slow down machines if there are too many
+    if (featureFragments.length === 1 || featureFragments.length > 100) return feature;
 
     return featureFragments
       .reduce((acc, curr) => turfUnion(curr, (acc ? acc : curr)));
