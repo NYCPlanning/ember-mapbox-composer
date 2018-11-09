@@ -56,12 +56,14 @@ import layout from '../templates/components/labs-layers-tooltip';
   @public
 */
 export default class LabsLayersTooltipComponent extends Component {
-  @computed('top', 'left', 'offset')
+  @computed('mousePosition')
   get style() {
-    const position = this.getProperties('top', 'left', 'offset');
+    const { y: top, x: left } = this.get('mousePosition');
+    const offset = this.get('offset');
+
     return htmlSafe(`
-      top: ${position.top + position.offset}px; 
-      left: ${position.left + position.offset}px; 
+      top: ${top + offset}px; 
+      left: ${left + offset}px; 
       pointer-events: none;
     `);
   }
@@ -89,6 +91,7 @@ export default class LabsLayersTooltipComponent extends Component {
   */
   left = 0;
 
+  mousePosition;
   /**
     Geographic feature of the layer that is hovered when onLayerMouseMove is fired.
     @argument feature

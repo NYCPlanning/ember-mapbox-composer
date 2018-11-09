@@ -21,10 +21,11 @@
 {{/each}}
 
 {{yield (hash
-  tooltip=(if (and hoveredFeature hoveredLayer.tooltipable)
+  tooltip=(if (and mousePosition hoveredFeature hoveredLayer.tooltipable)
     (component toolTipComponent
       feature=hoveredFeature
       layer=hoveredLayer
+      mousePosition=mousePosition
       top=mousePosition.y
       left=mousePosition.x
     )

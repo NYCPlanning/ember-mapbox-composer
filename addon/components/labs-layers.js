@@ -198,6 +198,8 @@ export default class LayersComponent extends Component {
         }
       }
 
+      this.set('mousePosition', e.point);
+
       if (isNew) {
         const highlightEvent = this.get('onLayerHighlight');
         if (highlightEvent && feature) {
@@ -216,10 +218,7 @@ export default class LayersComponent extends Component {
         }
 
         // set the hovered feature
-        this.setProperties({
-          hoveredFeature: feature,
-          mousePosition: e.point,
-        });
+        this.set('hoveredFeature', feature);
 
         map.getSource('hovered-feature').setData(feature);
         map.setLayoutProperty('highlighted-feature', 'visibility', 'visible');
@@ -262,8 +261,7 @@ export default class LayersComponent extends Component {
   handleLayerMouseLeave() {
     const map = this.get('map');
     this.set('hoveredFeature', null);
-    map.getCanvas().style.cursor = '';
-
+    map.getCanvas().style.cursor = ''
     this.setProperties({
       hoveredFeature: null,
       mousePosition: null,
