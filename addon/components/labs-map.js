@@ -84,7 +84,7 @@ export default class MainMapComponent extends mapboxGlMap {
     @argument layerGroups
     @type DS.RecordArray
   */
-  layerGroups = null;
+  layerGroups;
 
   _onLoad(map, ...args) {
     super._onLoad(map, ...args);
