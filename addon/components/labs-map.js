@@ -63,6 +63,7 @@ export default class MainMapComponent extends mapboxGlMap {
   @computed('hoveredFeature')
   get hoveredFeatureSource() {
     const feature = this.get('hoveredFeature');
+
     return {
       type: 'geojson',
       data: feature,
@@ -90,7 +91,7 @@ export default class MainMapComponent extends mapboxGlMap {
     super._onLoad(map, ...args);
 
     // add source for highlighted-feature
-    map
+    if (!this.get('isDestroyed')) map
       .addSource('hovered-feature', this.get('hoveredFeatureSource'));
   }
 }
