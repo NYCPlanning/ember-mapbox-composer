@@ -7,6 +7,9 @@ module.exports = function(defaults) {
     'ember-font-awesome': {
       includeFontFiles: false
     },
+    autoImport: {
+      exclude: ['mapbox-gl', 'ember-mapbox-gl'],
+    },
   });
 
   /*

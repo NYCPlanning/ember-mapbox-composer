@@ -2,7 +2,15 @@
 
   {{#if map}}
 
+    <div class="labs-map-loaded"></div>
+
+    {{!-- Highlighted Layer Handling --}}
+    {{mapbox-gl-layer
+      map=map
+      layer=highlightedFeatureLayer}}
+
     {{yield (hash
+      mapInstance=map
       call=(component 'mapbox-gl-call' obj=map)
       control=(component 'mapbox-gl-control' map=map)
       image=(component 'mapbox-gl-image' map=map)
@@ -11,7 +19,10 @@
       on=(component 'mapbox-gl-on' eventSource=map)
       popup=(component 'mapbox-gl-popup' map=map)
       source=(component 'mapbox-gl-source' map=map)
-      labs-layers=(component 'labs-layers' map=map layerGroups=layerGroups)
+      labs-layers=(component 'labs-layers'
+        map=map
+        layerGroups=layerGroups
+        hoveredFeature=hoveredFeature)
     )}}
 
   {{/if}}

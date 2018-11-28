@@ -9,15 +9,19 @@ module('Integration | Component | labs-layers-tooltip', function(hooks) {
   test('it renders', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
+    this.set('mousePosition', {
+      x: 1,
+      y: 1,
+    })
 
-    await render(hbs`{{labs-layers-tooltip top=1 left=1}}`);
+    await render(hbs`{{labs-layers-tooltip mousePosition=mousePosition top=1 left=1}}`);
 
     assert.equal(this.element.textContent.trim(), '');
 
 
     // Template block usage:
     await render(hbs`
-      {{#labs-layers-tooltip top=1 left=1}}
+      {{#labs-layers-tooltip mousePosition=mousePosition top=1 left=1}}
         template block text
       {{/labs-layers-tooltip}}
     `);
@@ -28,8 +32,12 @@ module('Integration | Component | labs-layers-tooltip', function(hooks) {
   test('it generates correct markup', async function(assert) {
     // Set any properties with this.set('myProperty', 'value');
     // Handle any actions with this.set('myAction', function(val) { ... });
+    this.set('mousePosition', {
+      x: 1,
+      y: 1,
+    });
 
-    await render(hbs`{{labs-layers-tooltip top=1 left=1}}`);
+    await render(hbs`{{labs-layers-tooltip mousePosition=mousePosition top=1 left=1}}`);
 
     const tooltip = await find('.map-tooltip');
     assert.equal(getComputedStyle(tooltip)['top'], '21px');

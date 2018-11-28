@@ -1,11 +1,11 @@
 import Component from '@ember/component';
 import { action, computed } from '@ember-decorators/object';
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { Action } from '@ember-decorators/argument/types';
-import { type } from '@ember-decorators/argument/type';
 import { get } from '@ember/object';
+import { restartableTask } from 'ember-concurrency-decorators';
+import { timeout } from 'ember-concurrency';
+import turfUnion from '@turf/union';
 import ArrayProxy from '@ember/array/proxy';
+import { warn } from '@ember/debug';
 import layout from '../templates/components/labs-layers';
 
 /**
@@ -52,16 +52,6 @@ import layout from '../templates/components/labs-layers';
   @public
 */
 export default class LayersComponent extends Component {
-  constructor(...args) {
-    super(...args);
-
-    const map = this.get('map');
-
-    // add source for highlighted-feature
-    map
-      .addSource('hovered-feature', this.get('hoveredFeatureSource'));
-  }
-
   layout=layout
 
   /**
@@ -76,8 +66,6 @@ export default class LayersComponent extends Component {
     @private
     @type MapboxGL Map Instance
   */
-  @required
-  @argument
   map;
 
   /**
@@ -86,7 +74,6 @@ export default class LayersComponent extends Component {
     @argument interactivity
     @type boolean
   */
-  @argument
   interactivity = true;
 
   /**
@@ -94,8 +81,6 @@ export default class LayersComponent extends Component {
     @argument layerGroups
     @type Array
   */
-  @required
-  @argument
   layerGroups;
 
   /**
@@ -103,8 +88,6 @@ export default class LayersComponent extends Component {
     @argument onLayerClick
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerClick = () => {};
 
   /**
@@ -112,8 +95,6 @@ export default class LayersComponent extends Component {
     @argument onLayerMouseMove
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerMouseMove = () => {};
 
   /**
@@ -121,8 +102,6 @@ export default class LayersComponent extends Component {
     @argument onLayerMouseLeave
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerMouseLeave = () => {};
 
   /**
@@ -130,8 +109,6 @@ export default class LayersComponent extends Component {
     @argument onLayerHighlight
     @type Action
   */
-  @argument
-  @type(Action)
   onLayerHighlight = () => {};
 
   /**
@@ -139,39 +116,10 @@ export default class LayersComponent extends Component {
     @argument toolTipComponent
     @type String
   */
-  @argument
   toolTipComponent = 'labs-layers-tooltip';
 
-  /**
-    MapboxGL Style object for the hightlighted layer
-    @argument highlightedFeatureLayer
-    @type Object
-  */
-  @argument
-  highlightedFeatureLayer = {
-    id: 'highlighted-feature',
-    type: 'line',
-    source: 'hovered-feature',
-    paint: {
-      'line-color': '#ffff00',
-      'line-opacity': 0.3,
-      'line-width': {
-        stops: [
-          [8, 4],
-          [11, 7],
-        ],
-      },
-    },
-  }
 
-  @computed('hoveredFeature')
-  get hoveredFeatureSource() {
-    const feature = this.get('hoveredFeature');
-    return {
-      type: 'geojson',
-      data: feature,
-    };
-  }
+  hoveredFeature;
 
   @computed('hoveredFeature')
   get hoveredLayer() {
@@ -198,27 +146,35 @@ export default class LayersComponent extends Component {
     });
   }
 
-  hoveredFeature = null;
   mousePosition = null;
 
   @action
-  handleLayerMouseClick(e) {
-    const [feature] = e.features;
+  async handleLayerMouseClick(e) {
+    // TODO: stitch clicked feature
+    const { features: [feature] } = e;
     const interactivity = this.get('interactivity');
 
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
     const layerClickEvent = this.get('onLayerClick');
+
     if ((layerClickEvent && feature) && interactivity) {
+      try {
+        const { geometry } = await this.get('stitchHoveredTiles').perform(feature);
+        feature.geometry = geometry;
+      } 
+      catch (e) {
+        // do nothing
+      }
       layerClickEvent(feature, foundLayer);
     }
   }
 
   @action
-  handleLayerMouseMove(e) {
+  async handleLayerMouseMove(e) {
     const map = this.get('map');
     const interactivity = this.get('interactivity');
 
-    const [feature] = e.features;
+    const { features: [feature] } = e;
 
     const foundLayer = this.get('layers').findBy('id', feature.layer.id);
 
@@ -235,13 +191,14 @@ export default class LayersComponent extends Component {
     // if layer is set for this behavior
     if ((highlightable || tooltipable) && interactivity) {
       const hoveredFeature = this.get('hoveredFeature');
-
       let isNew = true;
       if (hoveredFeature) {
-        if ((feature.id === hoveredFeature.id) && (feature.layer.id === hoveredFeature.layer.id)) {
+        if ((feature.properties.id === hoveredFeature.properties.id) && (feature.layer.id === hoveredFeature.layer.id)) {
           isNew = false;
         }
       }
+
+      this.set('mousePosition', e.point);
 
       if (isNew) {
         const highlightEvent = this.get('onLayerHighlight');
@@ -250,30 +207,70 @@ export default class LayersComponent extends Component {
           highlightEvent(e, foundLayer);
         }
 
+        // only stitch if it's for highlighting and new
+        // query for features of a given source
+        try {
+          const { geometry } = await this.get('stitchHoveredTiles').perform(feature);
+          feature.geometry = geometry;
+        } 
+        catch (e) {
+          // do nothing
+        }
+
         // set the hovered feature
-        this.setProperties({
-          hoveredFeature: feature,
-          mousePosition: e.point,
-        });
+        this.set('hoveredFeature', feature);
 
         map.getSource('hovered-feature').setData(feature);
+        map.setLayoutProperty('highlighted-feature', 'visibility', 'visible');
       }
+
       map.getCanvas().style.cursor = 'pointer';
     }
+  }
+
+  @restartableTask()
+  stitchHoveredTiles = function*(feature) {
+    const map = this.get('map');
+
+    yield timeout(5);
+
+    warn(`Missing ID in properties for ${feature.layer.source}`, feature.properties.id, { 
+      id: 'ember-mapbox-composer.id-missing' 
+    });
+
+    // require an id for stitching
+    if (!feature.properties.id) this.cancel();
+
+    // query for features by source
+    const featureFragments = map
+      .querySourceFeatures(feature.layer.source, {
+        sourceLayer: feature.layer['source-layer'], 
+        filter: ['==', 'id', feature.properties.id],
+      })
+      .map(({ geometry, properties }) => ({ type: 'Feature', properties, geometry }));
+
+    // we don't need to union if there is only one
+    // we also don't want to slow down machines if there are too many
+    if (featureFragments.length === 1 || featureFragments.length > 100) return feature;
+
+    return featureFragments
+      .reduce((acc, curr) => turfUnion(curr, (acc ? acc : curr)));
   }
 
   @action
   handleLayerMouseLeave() {
     const map = this.get('map');
     this.set('hoveredFeature', null);
-    map.getCanvas().style.cursor = '';
-
+    map.getCanvas().style.cursor = ''
     this.setProperties({
       hoveredFeature: null,
       mousePosition: null,
     });
 
+    map.setLayoutProperty('highlighted-feature', 'visibility', 'none');
+
     const mouseLeaveEvent = this.get('onLayerMouseLeave');
+
     if (mouseLeaveEvent) {
       mouseLeaveEvent();
     }

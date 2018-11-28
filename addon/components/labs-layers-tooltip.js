@@ -1,8 +1,5 @@
 import Component from '@ember/component';
 import { computed } from '@ember-decorators/object';
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
 import { htmlSafe } from '@ember/string';
 import layout from '../templates/components/labs-layers-tooltip';
 
@@ -59,12 +56,14 @@ import layout from '../templates/components/labs-layers-tooltip';
   @public
 */
 export default class LabsLayersTooltipComponent extends Component {
-  @computed('top', 'left', 'offset')
+  @computed('mousePosition')
   get style() {
-    const position = this.getProperties('top', 'left', 'offset');
+    const { y: top, x: left } = this.get('mousePosition');
+    const offset = this.get('offset');
+
     return htmlSafe(`
-      top: ${position.top + position.offset}px; 
-      left: ${position.left + position.offset}px; 
+      top: ${top + offset}px; 
+      left: ${left + offset}px; 
       pointer-events: none;
     `);
   }
@@ -76,7 +75,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @argument offset
     @type Number
   */
-  @argument
   offset = 20;
 
   /**
@@ -84,9 +82,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @argument top
     @type Number
   */
-  @required
-  @argument
-  @type('number')
   top = 0;
 
   /**
@@ -94,10 +89,13 @@ export default class LabsLayersTooltipComponent extends Component {
     @argument left
     @type Number
   */
-  @required
-  @argument
-  @type('number')
   left = 0;
+
+  /**
+    Native mousePosition object that is passed from labs-layers
+    @private
+  **/
+  mousePosition;
 
   /**
     Geographic feature of the layer that is hovered when onLayerMouseMove is fired.
@@ -105,7 +103,6 @@ export default class LabsLayersTooltipComponent extends Component {
     @type Object
     @private
   */
-  @argument
   feature;
 
   /**
@@ -114,6 +111,5 @@ export default class LabsLayersTooltipComponent extends Component {
     @type Object
     @private
   */
-  @argument
   layer;
 }
