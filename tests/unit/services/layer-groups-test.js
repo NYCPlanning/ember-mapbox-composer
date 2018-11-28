@@ -169,7 +169,6 @@ module('Unit | Service | layer-groups', function(hooks) {
     service.initializeObservers(layerGroups);
     assert.equal(service.get('visibleLayerGroups').length, 2);
 
-    layerGroups.get('firstObject').set('selected', 1);
     assert.ok(typeof service.get('visibleLayerGroups') !== 'string');
   });
 });

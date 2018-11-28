@@ -91,7 +91,12 @@ export default class LabsLayersTooltipComponent extends Component {
   */
   left = 0;
 
+  /**
+    Native mousePosition object that is passed from labs-layers
+    @private
+  **/
   mousePosition;
+
   /**
     Geographic feature of the layer that is hovered when onLayerMouseMove is fired.
     @argument feature

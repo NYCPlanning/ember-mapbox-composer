@@ -5,4 +5,9 @@ module.exports = {
   isDevelopingAddon() {
     return true;
   },
+  options: {
+    autoImport: {
+      exclude: ['mapbox-gl', 'ember-mapbox-gl'],
+    },
+  },
 };
