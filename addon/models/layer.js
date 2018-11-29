@@ -5,6 +5,7 @@ import { alias } from '@ember-decorators/object/computed';
 import { copy } from 'ember-copy';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
+import { next } from '@ember/runloop';
 
 /**
   Model for individual layers. Belongs to a layer-group. May be called individually for state changes.
@@ -35,12 +36,12 @@ export default class LayerModel extends Model.extend({}) {
 
     if (this.get('layerVisibilityType') === 'singleton') {
       if (this.get('position') === 1 && this.get('layerGroup.visible')) {
-        this.set('visibility', true);
+        next(() => this.set('visibility', true));
       } else {
-        this.set('visibility', false);
+        next(() => this.set('visibility', false));
       }
     } else {
-      this.set('visibility', visible);
+      next(() => this.set('visibility', visible));
     }
   }
 
