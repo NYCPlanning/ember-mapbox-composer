@@ -1,8 +1,7 @@
 import Component from '@ember/component';
-import { action, computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { get } from '@ember/object';
-import { restartableTask } from 'ember-concurrency-decorators';
-import { timeout } from 'ember-concurrency';
+import { timeout, task } from 'ember-concurrency';
 import turfUnion from '@turf/union';
 import ArrayProxy from '@ember/array/proxy';
 import { warn } from '@ember/debug';
@@ -51,8 +50,8 @@ import layout from '../templates/components/labs-layers';
   @class LayersComponent
   @public
 */
-export default class LayersComponent extends Component {
-  layout=layout
+export default Component.extend({
+  layout,
 
   /**
     Reference to a instance of a MapboxGL map. Handled internally when using contextual components:
@@ -66,7 +65,7 @@ export default class LayersComponent extends Component {
     @private
     @type MapboxGL Map Instance
   */
-  map;
+  map: null,
 
   /**
     Whether layergroups should have interactivity (highlighting and clicking).  Useful for temporarily disabling interactivity during drawing mode.
@@ -74,55 +73,54 @@ export default class LayersComponent extends Component {
     @argument interactivity
     @type boolean
   */
-  interactivity = true;
+  interactivity: true,
 
   /**
     Collection of layer-group objects
     @argument layerGroups
     @type Array
   */
-  layerGroups;
+  layerGroups: null,
 
   /**
     Event fired on layer click. Scoped to individual layers. Returns the mouse event and clicked layer.
     @argument onLayerClick
     @type Action
   */
-  onLayerClick = () => {};
+  onLayerClick() {},
 
   /**
     Event fired on layer mousemove. Scoped to individual layers. Returns the mouse event and found layer.
     @argument onLayerMouseMove
     @type Action
   */
-  onLayerMouseMove = () => {};
+  onLayerMouseMove() {},
 
   /**
     Event fired on layer mouseleave. Scoped to individual layers. Returns the mouse event and found layer.
     @argument onLayerMouseLeave
     @type Action
   */
-  onLayerMouseLeave = () => {};
+  onLayerMouseLeave() {},
 
   /**
     Event fired on layer highlight. Returns the id of the layer that is being highlighted.
     @argument onLayerHighlight
     @type Action
   */
-  onLayerHighlight = () => {};
+  onLayerHighlight() {},
 
   /**
     Name of local component to use in place of default component.
     @argument toolTipComponent
     @type String
   */
-  toolTipComponent = 'labs-layers-tooltip';
+  toolTipComponent: 'labs-layers-tooltip',
 
 
-  hoveredFeature;
+  hoveredFeature: null,
 
-  @computed('hoveredFeature')
-  get hoveredLayer() {
+  hoveredLayer: computed('hoveredFeature', function() {
     const feature = this.get('hoveredFeature');
 
     if (feature) {
@@ -131,10 +129,9 @@ export default class LayersComponent extends Component {
     }
 
     return null;
-  }
+  }),
 
-  @computed('layerGroups.@each.layers')
-  get layers() {
+  layers: computed('layerGroups.@each.layers', function() {
     return ArrayProxy.create({
       content: this.get('layerGroups')
         .map((layerGroup) => get(layerGroup, 'layers'))
@@ -144,11 +141,10 @@ export default class LayersComponent extends Component {
           return [...accumulator, ...layers];
         }, [])
     });
-  }
+  }),
 
-  mousePosition = null;
+  mousePosition: null,
 
-  @action
   async handleLayerMouseClick(e) {
     // TODO: stitch clicked feature
     const { features: [feature] } = e;
@@ -167,9 +163,8 @@ export default class LayersComponent extends Component {
       }
       layerClickEvent(feature, foundLayer);
     }
-  }
+  },
 
-  @action
   async handleLayerMouseMove(e) {
     const map = this.get('map');
     const interactivity = this.get('interactivity');
@@ -226,10 +221,9 @@ export default class LayersComponent extends Component {
 
       map.getCanvas().style.cursor = 'pointer';
     }
-  }
+  },
 
-  @restartableTask()
-  stitchHoveredTiles = function*(feature) {
+  stitchHoveredTiles: task(function*(feature) {
     const map = this.get('map');
 
     yield timeout(5);
@@ -255,9 +249,8 @@ export default class LayersComponent extends Component {
 
     return featureFragments
       .reduce((acc, curr) => turfUnion(curr, (acc ? acc : curr)));
-  }
+  }).restartable(),
 
-  @action
   handleLayerMouseLeave() {
     const map = this.get('map');
     this.set('hoveredFeature', null);
@@ -275,4 +268,4 @@ export default class LayersComponent extends Component {
       mouseLeaveEvent();
     }
   }
-}
+});

@@ -46,8 +46,8 @@ export default class ApplicationRoute extends Route {
   @class LabsMapLegendComponent
   @deprecated
 */
-export default class LabsMapLegendComponent extends Component {
-  layout = layout;
+export default Component.extend({
+  layout,
 
-  model;
-}
+  model: null,
+});

@@ -1,7 +1,7 @@
 import mapboxGlMap from 'ember-mapbox-gl/components/mapbox-gl';
 import { assign } from '@ember/polyfills';
 import { get } from '@ember/object';
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import layout from '../templates/components/labs-map';
 
 export const highlightedFeatureLayer = {
@@ -42,9 +42,9 @@ export const highlightedFeatureLayer = {
   @class LabsMapComponent
   @public
 */
-export default class MainMapComponent extends mapboxGlMap {
+export default mapboxGlMap.extend({
   init(...args) {
-    super.init(...args);
+    this._super(...args);
 
     // if layerGroups are passed to the map, use the style from that
     if (this.get('layerGroups')) {
@@ -56,28 +56,28 @@ export default class MainMapComponent extends mapboxGlMap {
 
       if (mapboxStyle) assign(get(this, 'initOptions') || {}, { style: mapboxStyle });
     }
-  }
+  },
 
-  layout = layout;
+  layout,
 
-  @computed('hoveredFeature')
-  get hoveredFeatureSource() {
+  
+  hoveredFeatureSource: computed('hoveredFeature', function() {
     const feature = this.get('hoveredFeature');
 
     return {
       type: 'geojson',
       data: feature,
     };
-  }
+  }),
 
-  hoveredFeature = null;
+  hoveredFeature: null,
 
   /**
     MapboxGL Style object for the hightlighted layer
     @argument highlightedFeatureLayer
     @type Object
   */
-  highlightedFeatureLayer = highlightedFeatureLayer;
+  highlightedFeatureLayer,
 
   /**
     Collection of layer-group models (see: [DS.RecordArray](https://emberjs.com/api/ember-data/release/classes/DS.RecordArray)).
@@ -85,13 +85,13 @@ export default class MainMapComponent extends mapboxGlMap {
     @argument layerGroups
     @type DS.RecordArray
   */
-  layerGroups;
+  layerGroups: null,
 
   _onLoad(map, ...args) {
-    super._onLoad(map, ...args);
+    this._super(map, ...args);
 
     // add source for highlighted-feature
     if (!this.get('isDestroyed')) map
       .addSource('hovered-feature', this.get('hoveredFeatureSource'));
-  }
-}
+  },
+});

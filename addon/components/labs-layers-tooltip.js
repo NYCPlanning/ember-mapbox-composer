@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
 import layout from '../templates/components/labs-layers-tooltip';
 
@@ -55,9 +55,8 @@ import layout from '../templates/components/labs-layers-tooltip';
   @class LabsLayersTooltipComponent
   @public
 */
-export default class LabsLayersTooltipComponent extends Component {
-  @computed('mousePosition')
-  get style() {
+export default Component.extend({
+  style: computed('mousePosition', function() {
     const { y: top, x: left } = this.get('mousePosition');
     const offset = this.get('offset');
 
@@ -66,36 +65,37 @@ export default class LabsLayersTooltipComponent extends Component {
       left: ${left + offset}px; 
       pointer-events: none;
     `);
-  }
+  }),
 
-  layout = layout
+  layout,
 
   /**
     Offset of tooltip div element in pixels.
     @argument offset
     @type Number
   */
-  offset = 20;
+  offset: 20,
 
   /**
     Top offset of tooltip div in pixels.
     @argument top
     @type Number
   */
-  top = 0;
+  top: 0,
 
   /**
     Left offset of tooltip div in pixels.
     @argument left
     @type Number
   */
-  left = 0;
+  left: 0,
 
   /**
     Native mousePosition object that is passed from labs-layers
+    @type Object
     @private
   **/
-  mousePosition;
+  mousePosition: null,
 
   /**
     Geographic feature of the layer that is hovered when onLayerMouseMove is fired.
@@ -103,7 +103,7 @@ export default class LabsLayersTooltipComponent extends Component {
     @type Object
     @private
   */
-  feature;
+  feature: null,
 
   /**
     Layer that is hovered when onLayerMouseMove is fired.
@@ -111,5 +111,5 @@ export default class LabsLayersTooltipComponent extends Component {
     @type Object
     @private
   */
-  layer;
-}
+  layer: null,
+});

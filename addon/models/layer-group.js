@@ -1,8 +1,10 @@
 import Model from 'ember-data/model';
-import { attr, hasMany } from '@ember-decorators/data';
-import { mapBy, alias } from '@ember-decorators/object/computed';
-import { computed } from '@ember-decorators/object';
-import { service } from '@ember-decorators/service';
+import { computed } from '@ember/object';
+import { inject as service } from '@ember/service';
+import { alias, mapBy } from '@ember/object/computed';
+import DS from 'ember-data';
+
+const { hasMany, attr } = DS;
 
 /**
   Model for layer groups.
@@ -13,15 +15,15 @@ import { service } from '@ember-decorators/service';
   @public
   @class LayerModel
 */
-export default class LayerGroupModel extends Model.extend({}) {
+export default Model.extend({
   init(...args) {
     this._super(...args);
 
     // update registry for aggregate state service
     this.set('layerGroupService.layerGroupRegistry', this.get('layerGroupService.layerGroupRegistry').concat(this));
-  }
+  },
 
-  @hasMany('layer', { async: false }) layers
+  layers: hasMany('layer', { async: false }),
 
   /**
     Abstraction for the visibility state of related layers. Mutations will fire updates to child layers.
@@ -30,7 +32,7 @@ export default class LayerGroupModel extends Model.extend({}) {
     @property visible
     @type Boolean
   */
-  @attr('boolean', { defaultValue: true }) visible
+  visible: attr('boolean', { defaultValue: true }),
 
   /**
     This property describes the visibility state
@@ -43,13 +45,12 @@ export default class LayerGroupModel extends Model.extend({}) {
     @property layerVisibilityType
     @type String('singleton', 'multi', 'binary')
   */
-  @attr('string', { defaultValue: 'binary' }) layerVisibilityType
-  @attr('string') title
-  @attr('string', { defaultValue: '' }) titleTooltip
-  @attr('string') legendIcon
-  @attr('string') legendColor
-  @attr('string') meta
-  @attr() legendConfig
+  layerVisibilityType: attr('string', { defaultValue: 'binary' }),
+
+  titleTooltip: attr('string', { defaultValue: '' }),
+  legendIcon: attr('string'),
+  legendColor: attr('string'),
+  legendConfig: attr(),
 
   /**
     A JSON object containing any number of keys and values to store metadata.
@@ -57,9 +58,10 @@ export default class LayerGroupModel extends Model.extend({}) {
     @property meta
     @type Object
   */
-  @attr() meta
-  @attr() legend
-  @alias('legend.label') title
+  meta: attr(),
+
+  legend: attr(),
+  title: alias('legend.label'),
 
   /**
     Convenience property for a list of internal MapboxGL layer IDs.
@@ -67,17 +69,18 @@ export default class LayerGroupModel extends Model.extend({}) {
     @property layerIds
     @type Array
   */
-  @mapBy('layers', 'id') layerIds;
+  layerIds: mapBy('layers', 'id'),
 
   // singleton only
-  @computed('layers.@each.visibility')
-  get selected() {
-    return this.get('layers').findBy('visibility', true);
-  }
-  set selected(id) {
-    this.get('layers').setEach('visibility', false);
-    this.get('layers').findBy('id', id).set('visibility', true);
-  }
+  selected: computed('layers.@each.visibility', {
+    get() {
+      return this.get('layers').findBy('visibility', true);
+    },
+    set(id) {
+      this.get('layers').setEach('visibility', false);
+      this.get('layers').findBy('id', id).set('visibility', true);
+    }
+  }),
 
   /**
     This method finds a related layer and overwrites its paint object
@@ -88,7 +91,7 @@ export default class LayerGroupModel extends Model.extend({}) {
   */
   setPaintForLayer(...args) {
     this._mutateLayerProperty('paint', ...args);
-  }
+  },
 
   /**
     This method finds a related layer and overwrites its filter array
@@ -99,7 +102,7 @@ export default class LayerGroupModel extends Model.extend({}) {
   */
   setFilterForLayer(...args) {
     this._mutateLayerProperty('filter', ...args);
-  }
+  },
 
   /**
     This method finds a related layer and overwrites its layout object
@@ -110,7 +113,7 @@ export default class LayerGroupModel extends Model.extend({}) {
   */
   setLayoutForLayer(...args) {
     this._mutateLayerProperty('layout', ...args);
-  }
+  },
 
   /**
     This method hides all layers and shows only one
@@ -126,7 +129,7 @@ export default class LayerGroupModel extends Model.extend({}) {
 
       layer.set('layout', {}/* not visible */);
     });
-  }
+  },
 
   /**
     This method generically mutates a property on a related layer
@@ -142,7 +145,7 @@ export default class LayerGroupModel extends Model.extend({}) {
     if (!foundLayer) throw Error('No related layer with this ID.');
 
     foundLayer.set(property, value);
-  }
+  },
 
   /**
     Internal for determining first occurence of a layer
@@ -151,8 +154,7 @@ export default class LayerGroupModel extends Model.extend({}) {
     @type Number
     @private
   */
-  _firstOccurringLayer = null;
+  _firstOccurringLayer: null,
 
-  @service('layerGroups')
-  layerGroupService
-}
+  layerGroupService: service('layerGroups'),
+});

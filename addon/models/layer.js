@@ -1,11 +1,13 @@
 import Model from 'ember-data/model';
-import { computed } from '@ember-decorators/object';
-import { attr, belongsTo } from '@ember-decorators/data';
-import { alias } from '@ember-decorators/object/computed';
+import { computed } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import { copy } from 'ember-copy';
 import { set } from '@ember/object';
 import { assign } from '@ember/polyfills';
 import { next } from '@ember/runloop';
+import DS from 'ember-data';
+
+const { attr, belongsTo } = DS;
 
 /**
   Model for individual layers. Belongs to a layer-group. May be called individually for state changes.
@@ -13,9 +15,9 @@ import { next } from '@ember/runloop';
   @public
   @class LayerModel
 */
-export default class LayerModel extends Model.extend({}) {
-  constructor(...args) {
-    super(...args);
+export default Model.extend({
+  init(...args) {
+    this._super(...args);
 
     // enforce presence of blank object for mapboxGL validation
     if (!this.get('style.layout')) this.set('style.layout', {});
@@ -29,7 +31,7 @@ export default class LayerModel extends Model.extend({}) {
 
     this.delegateVisibility();
     this.addObserver('layerGroup.visible', this, 'delegateVisibility');
-  }
+  },
 
   delegateVisibility() {
     const visible = this.get('layerGroup.visible');
@@ -43,46 +45,46 @@ export default class LayerModel extends Model.extend({}) {
     } else {
       next(() => this.set('visibility', visible));
     }
-  }
+  },
 
-  @belongsTo('layer-group', { async: false }) layerGroup
+  layerGroup: belongsTo('layer-group', { async: false }),
 
-  @attr('number', { defaultValue: -1 }) position;
-  @attr('string', { defaultValue: 'boundary_country' }) before
-  @attr('string') displayName;
-  @attr('hash', { defaultValue: () => ({}) }) style
+  position: attr('number', { defaultValue: -1 }),
+  before: attr('string', { defaultValue: 'boundary_country' }),
+  displayName: attr('string'),
+  style: attr('hash', { defaultValue: () => ({}) }),
 
   /**
     Determines whether to fire mouseover events for the layer.
     @property highlightable
     @type Boolean
   */
-  @attr('boolean', { defaultValue: false }) highlightable;
+  highlightable: attr('boolean', { defaultValue: false }),
 
   /**
     Determines whether to fire click events for the layer.
     @property clickable
     @type Boolean
   */
-  @attr('boolean', { defaultValue: false }) clickable;
+  clickable: attr('boolean', { defaultValue: false }),
 
   /**
     Determines whether to render positioned tooltip components for the layer.
     @property tooltipable
     @type Boolean
   */
-  @attr('boolean', { defaultValue: false }) tooltipable
+  tooltipable: attr('boolean', { defaultValue: false }),
 
   /**
     Optional template for tooltips. Does not handle any rendering.
     @property tooltipTemplate
     @type String
   */
-  @attr('string', { defaultValue: '' }) tooltipTemplate
+  tooltipTemplate: attr('string', { defaultValue: '' }),
 
-  @alias('style.paint') paint;
-  @alias('style.layout') layout;
-  @alias('layerGroup.layerVisibilityType') layerVisibilityType;
+  paint: alias('style.paint'),
+  layout: alias('style.layout'),
+  layerVisibilityType: alias('layerGroup.layerVisibilityType'),
 
 
   /**
@@ -91,23 +93,23 @@ export default class LayerModel extends Model.extend({}) {
     @type Object
     @private
   */
-  @computed('style.{paint,layout,filter}')
-  get mapboxGlStyle() {
+  mapboxGlStyle: computed('style.{paint,layout,filter}', function() {
     return this.get('style');
-  }
+  }),
 
   /**
     Getter and setter for filter. Array structure should follow Mapbox's [Expression](https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions) syntax.
     @property filter
     @type Array
   */
-  @computed('style.filter')
-  get filter() {
-    return this.get('style.filter');
-  }
-  set filter(filter) {
-    this.set('style', assign({}, this.get('style'), { filter }));
-  }
+  filter: computed('style.filter', {
+    get() {
+      return this.get('style.filter');
+    },
+    set(filter) {
+      this.set('style', assign({}, this.get('style'), { filter }));
+    },
+  }),
 
   /** 
     Getter and setter for visibility. Mutates a Mapbox property that actually determines visibility. Depends on parent visibility.
@@ -115,18 +117,19 @@ export default class LayerModel extends Model.extend({}) {
     @property visibility
     @type Boolean
   */
-  @computed('layout.visibility')
-  get visibility() {
-    return this.get('layout.visibility') === 'visible';
-  }
-  set visibility(value) {
-    const parentVisibilityState = value && this.get('layerGroup.visible');
-    const visibility = (parentVisibilityState ? 'visible' : 'none');
-    const layout = copy(this.get('layout'));
+  visibility: computed('layout.visibility', {
+    get() {
+      return this.get('layout.visibility') === 'visible';
+    },
+    set(value) {
+      const parentVisibilityState = value && this.get('layerGroup.visible');
+      const visibility = (parentVisibilityState ? 'visible' : 'none');
+      const layout = copy(this.get('layout'));
 
-    if (layout) {
-      set(layout, 'visibility', visibility);
-      this.set('layout', layout);
-    }
-  }
-}
+      if (layout) {
+        set(layout, 'visibility', visibility);
+        this.set('layout', layout);
+      }
+    },
+  }),
+});
