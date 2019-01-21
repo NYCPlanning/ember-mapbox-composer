@@ -4,7 +4,7 @@
   strongHeading='Composer'
   byline='An Ember addon for ambitious mapping applications'}}
 
-{{#labs-map
+{{#mapbox-gl-composer
   id='main-map'
   mapLoaded=(action 'mapLoaded')
   layerGroups=model
@@ -14,7 +14,7 @@
       Bananas
     {{/layers.tooltip}}
   {{/map.labs-layers}}
-{{/labs-map}}
+{{/mapbox-gl-composer}}
 
 <div class="docs-container docs-md">
   <section class="max-w-md mx-auto pb-8 leading-loose">

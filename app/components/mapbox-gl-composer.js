@@ -1,0 +1,1 @@
+export { default } from 'ember-mapbox-composer/components/mapbox-gl-composer';

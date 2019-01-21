@@ -20,14 +20,20 @@
   }}
 {{/each}}
 
-{{yield (hash
-  tooltip=(if (and mousePosition hoveredFeature hoveredLayer.tooltipable)
-    (component toolTipComponent
-      feature=hoveredFeature
-      layer=hoveredLayer
-      mousePosition=mousePosition
-      top=mousePosition.y
-      left=mousePosition.x
-    )
-  )
-)}}
+{{!-- Tooltip Handling --}}
+{{#if (and mousePosition hoveredFeature hoveredLayer.tooltipable)}}
+  {{component toolTipComponent
+    feature=hoveredFeature
+    layer=hoveredLayer
+    mousePosition=mousePosition
+    top=mousePosition.y
+    left=mousePosition.x}}
+{{/if}}
+
+{{!-- Highlighted Layer Handling --}}
+
+{{mapbox-gl-layer
+  map=map
+  layer=highlightedFeatureLayer}}
+
+{{yield _layerGroupsHash}}

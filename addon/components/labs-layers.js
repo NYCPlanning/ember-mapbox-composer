@@ -1,11 +1,27 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 import { timeout, task } from 'ember-concurrency';
 import turfUnion from '@turf/union';
 import ArrayProxy from '@ember/array/proxy';
 import { warn } from '@ember/debug';
 import layout from '../templates/components/labs-layers';
+
+export const highlightedFeatureLayer = {
+  id: 'highlighted-feature',
+  type: 'line',
+  paint: {
+    'line-color': '#ffff00',
+    'line-opacity': 0.3,
+    'line-width': {
+      stops: [
+        [8, 4],
+        [11, 7],
+      ],
+    },
+  },
+  layout: { visibility: 'visible' },
+};
 
 /**
   Renders a collection of Mapbox Composer-compatible layer groups.
@@ -82,6 +98,15 @@ export default Component.extend({
   */
   layerGroups: null,
 
+  _layerGroupsHash: computed('layerGroups.@each.layers', function() {
+    return this.get('layerGroups')
+      .reduce((acc, layerGroup) => {
+        acc[layerGroup.id] = layerGroup;
+
+        return acc;
+      }, {});
+  }),
+
   /**
     Event fired on layer click. Scoped to individual layers. Returns the mouse event and clicked layer.
     @argument onLayerClick
@@ -117,18 +142,56 @@ export default Component.extend({
   */
   toolTipComponent: 'labs-layers-tooltip',
 
+  hoveredLayer: null,
 
-  hoveredFeature: null,
+  hoveredFeature: computed('', function() {
+    return {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              -107.666015625,
+              44.08758502824516
+            ],
+            [
+              -107.666015625,
+              41.31082388091818
+            ],
+            [
+              -103.0078125,
+              41.902277040963696
+            ],
+            [
+              -103.095703125,
+              44.02442151965934
+            ],
+            [
+              -107.666015625,
+              44.08758502824516
+            ]
+          ]
+        ]
+      }
+    };
+  }),
 
-  hoveredLayer: computed('hoveredFeature', function() {
+  /**
+    MapboxGL Style object for the hightlighted layer
+    @argument highlightedFeatureLayer
+    @type Object
+  */
+  highlightedFeatureLayer: computed('hoveredFeature', 'hoveredLayer', function() {
     const feature = this.get('hoveredFeature');
 
-    if (feature) {
-      return this.get('layers')
-        .findBy('id', feature.layer.id);
-    }
+    set(highlightedFeatureLayer, 'source', {
+      type: 'geojson',
+      data: feature,
+    });
 
-    return null;
+    return highlightedFeatureLayer;
   }),
 
   layers: computed('layerGroups.@each.layers', function() {
@@ -144,7 +207,6 @@ export default Component.extend({
   }),
 
   mousePosition: null,
-
 
   stitchHoveredTiles: task(function*(feature) {
     const map = this.get('map');
@@ -244,8 +306,8 @@ export default Component.extend({
 
           // set the hovered feature
           this.set('hoveredFeature', feature);
+          this.set('hoveredLayer', foundLayer);
 
-          map.getSource('hovered-feature').setData(feature);
           map.setLayoutProperty('highlighted-feature', 'visibility', 'visible');
         }
 
@@ -255,7 +317,7 @@ export default Component.extend({
 
     handleLayerMouseLeave() {
       const map = this.get('map');
-      this.set('hoveredFeature', null);
+
       map.getCanvas().style.cursor = ''
       this.setProperties({
         hoveredFeature: null,
