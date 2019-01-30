@@ -106,7 +106,7 @@ export default Model.extend({
     get() {
       return this.get('style.filter');
     },
-    set(filter) {
+    set(key, filter) {
       this.set('style', assign({}, this.get('style'), { filter }));
     },
   }),
