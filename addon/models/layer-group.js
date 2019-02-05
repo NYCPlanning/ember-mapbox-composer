@@ -47,6 +47,7 @@ export default Model.extend({
   */
   layerVisibilityType: attr('string', { defaultValue: 'binary' }),
 
+  infoLink: attr('string', { defaultValue: '' }),
   titleTooltip: attr('string', { defaultValue: '' }),
   legendIcon: attr('string'),
   legendColor: attr('string'),
