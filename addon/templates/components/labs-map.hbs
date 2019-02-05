@@ -7,7 +7,12 @@
     {{!-- Highlighted Layer Handling --}}
     {{mapbox-gl-layer
       map=map
-      layer=highlightedFeatureLayer}}
+      layer=highlightedLineFeatureLayer
+    }} 
+    {{mapbox-gl-layer
+      map=map
+      layer=highlightedCircleFeatureLayer
+    }}
 
     {{yield (hash
       mapInstance=map

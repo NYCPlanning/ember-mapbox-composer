@@ -246,7 +246,13 @@ export default Component.extend({
           this.set('hoveredFeature', feature);
 
           map.getSource('hovered-feature').setData(feature);
-          map.setLayoutProperty('highlighted-feature', 'visibility', 'visible');
+          if(feature.layer.type == "circle") {
+            map.setLayoutProperty('highlighted-feature-circle', 'visibility', 'visible');
+            map.setLayoutProperty('highlighted-feature-line', 'visibility', 'none');
+          } else {
+            map.setLayoutProperty('highlighted-feature-circle', 'visibility', 'none');
+            map.setLayoutProperty('highlighted-feature-line', 'visibility', 'visible');
+          }
         }
 
         map.getCanvas().style.cursor = 'pointer';
@@ -262,7 +268,8 @@ export default Component.extend({
         mousePosition: null,
       });
 
-      map.setLayoutProperty('highlighted-feature', 'visibility', 'none');
+      map.setLayoutProperty('highlighted-feature-circle', 'visibility', 'none');
+      map.setLayoutProperty('highlighted-feature-line', 'visibility', 'none');
 
       const mouseLeaveEvent = this.get('onLayerMouseLeave');
 

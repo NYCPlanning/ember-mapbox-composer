@@ -4,10 +4,36 @@ import { get } from '@ember/object';
 import { computed } from '@ember/object';
 import layout from '../templates/components/labs-map';
 
-export const highlightedFeatureLayer = {
-  id: 'highlighted-feature',
-  type: 'line',
+const highlightedCircleFeatureLayer = {
+  id: 'highlighted-feature-circle',
   source: 'hovered-feature',
+  type: 'circle',
+  paint: {
+    'circle-color': 'rgba(255, 255, 255, 0.65)',
+    'circle-opacity': 1,
+    'circle-radius': {
+      stops: [
+        [16, 3],
+        [17, 6],
+      ],
+    },
+    'circle-stroke-opacity': {
+      stops: [
+        [15, 0],
+        [16, 0.8],
+      ],
+    },
+    'circle-stroke-color': '#ffff00',
+    'circle-stroke-width': 2.5,
+    'circle-pitch-scale': 'map',
+  },
+};
+
+
+const highlightedLineFeatureLayer = {
+  id: 'highlighted-feature-line',
+  source: 'hovered-feature',
+  type: 'line',
   paint: {
     'line-color': '#ffff00',
     'line-opacity': 0.3,
@@ -48,10 +74,10 @@ export default mapboxGlMap.extend({
 
     // if layerGroups are passed to the map, use the style from that
     if (this.get('layerGroups')) {
-      const { 
+      const {
         meta: {
-          mapboxStyle 
-        } 
+          mapboxStyle
+        }
       } = this.get('layerGroups') || {};
 
       if (mapboxStyle) assign(get(this, 'initOptions') || {}, { style: mapboxStyle });
@@ -60,7 +86,6 @@ export default mapboxGlMap.extend({
 
   layout,
 
-  
   hoveredFeatureSource: computed('hoveredFeature', function() {
     const feature = this.get('hoveredFeature');
 
@@ -71,13 +96,8 @@ export default mapboxGlMap.extend({
   }),
 
   hoveredFeature: null,
-
-  /**
-    MapboxGL Style object for the hightlighted layer
-    @argument highlightedFeatureLayer
-    @type Object
-  */
-  highlightedFeatureLayer,
+  highlightedCircleFeatureLayer,
+  highlightedLineFeatureLayer,
 
   /**
     Collection of layer-group models (see: [DS.RecordArray](https://emberjs.com/api/ember-data/release/classes/DS.RecordArray)).
