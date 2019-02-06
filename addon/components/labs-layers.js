@@ -203,8 +203,15 @@ export default Component.extend({
 
       const foundLayer = this.get('layers').findBy('id', feature.layer.id);
 
-      const { highlightable, tooltipable } =
-        foundLayer.getProperties('highlightable', 'tooltipable');
+      const {
+        highlightable,
+        tooltipable,
+        clickable,
+      } = foundLayer.getProperties('highlightable', 'tooltipable', 'clickable');
+
+      if (clickable) {
+        map.getCanvas().style.cursor = 'pointer';
+      }
 
       // this layer-specific event should always be called
       // if it's available
@@ -246,6 +253,7 @@ export default Component.extend({
           this.set('hoveredFeature', feature);
 
           map.getSource('hovered-feature').setData(feature);
+
           if(feature.layer.type == "circle") {
             map.setLayoutProperty('highlighted-feature-circle', 'visibility', 'visible');
             map.setLayoutProperty('highlighted-feature-line', 'visibility', 'none');
@@ -254,8 +262,6 @@ export default Component.extend({
             map.setLayoutProperty('highlighted-feature-line', 'visibility', 'visible');
           }
         }
-
-        map.getCanvas().style.cursor = 'pointer';
       }
     },
 
