@@ -76,7 +76,7 @@ export default Model.extend({
     get() {
       return this.get('layers').findBy('visibility', true);
     },
-    set(id) {
+    set(key, id) {
       this.get('layers').setEach('visibility', false);
       this.get('layers').findBy('id', id).set('visibility', true);
     }
