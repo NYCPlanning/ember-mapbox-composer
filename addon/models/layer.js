@@ -126,12 +126,12 @@ export default Model.extend({
       const visibility = (parentVisibilityState ? 'visible' : 'none');
       const layout = copy(this.get('layout'));
 
-
-
       if (layout) {
         set(layout, 'visibility', visibility);
         this.set('layout', layout);
       }
+
+      return visibility === 'visible';
     },
   }),
 });
