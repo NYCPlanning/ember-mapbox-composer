@@ -111,7 +111,7 @@ export default Model.extend({
     },
   }),
 
-  /** 
+  /**
     Getter and setter for visibility. Mutates a Mapbox property that actually determines visibility. Depends on parent visibility.
 
     @property visibility
@@ -121,7 +121,7 @@ export default Model.extend({
     get() {
       return this.get('layout.visibility') === 'visible';
     },
-    set(value) {
+    set(key, value) {
       const parentVisibilityState = value && this.get('layerGroup.visible');
       const visibility = (parentVisibilityState ? 'visible' : 'none');
       const layout = copy(this.get('layout'));
@@ -130,6 +130,8 @@ export default Model.extend({
         set(layout, 'visibility', visibility);
         this.set('layout', layout);
       }
+
+      return visibility === 'visible';
     },
   }),
 });
