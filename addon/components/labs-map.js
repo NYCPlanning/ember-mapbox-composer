@@ -17,12 +17,7 @@ const highlightedCircleFeatureLayer = {
         [17, 6],
       ],
     },
-    'circle-stroke-opacity': {
-      stops: [
-        [15, 0],
-        [16, 0.8],
-      ],
-    },
+    'circle-stroke-opacity': 0.8,
     'circle-stroke-color': '#ffff00',
     'circle-stroke-width': 2.5,
     'circle-pitch-scale': 'map',
