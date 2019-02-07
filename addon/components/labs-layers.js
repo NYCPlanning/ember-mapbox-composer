@@ -145,7 +145,7 @@ export default Component.extend({
 
   visibleLayerIds: computed('layers.@each.visibility', function() {
     return this.get('layers')
-      .filterBy('layout.visibility', 'visible')
+      .filterBy('visibility', true)
       .mapBy('id');
   }),
 
@@ -162,7 +162,7 @@ export default Component.extend({
     });
 
     // require an id for stitching
-    if (!feature.properties.id) this.cancel();
+    if (!feature.properties.id) return feature;
 
     // query for features by source
     const featureFragments = map
