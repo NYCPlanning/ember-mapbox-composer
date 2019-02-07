@@ -143,7 +143,7 @@ export default Component.extend({
     });
   }),
 
-  visibleLayerIds: computed('layers.@each.id', function() {
+  visibleLayerIds: computed('layers.@each.visibility', function() {
     return this.get('layers')
       .filterBy('layout.visibility', 'visible')
       .mapBy('id');
