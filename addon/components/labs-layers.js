@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { get } from '@ember/object';
-import { timeout, task } from 'ember-concurrency';
+import { timeout, task, didCancel } from 'ember-concurrency';
 import turfUnion from '@turf/union';
 import ArrayProxy from '@ember/array/proxy';
 import { warn } from '@ember/debug';
@@ -218,15 +218,15 @@ export default Component.extend({
         // if this is different from the currently highlighted feature
         highlightEvent(e, foundLayer);
 
-        // only stitch if it's for highlighting and new
-        // query for features of a given source
-        const { geometry } = yield this.get('stitchHoveredTiles').perform(feature);
-        feature.geometry = geometry;
-
         // set the hovered feature
         this.set('hoveredFeature', feature);
 
         map.getSource('hovered-feature').setData(feature);
+
+        // only stitch if it's for highlighting and new
+        // query for features of a given source
+        const { geometry } = yield this.get('stitchHoveredTiles').perform(feature);
+        feature.geometry = geometry;
 
         if(feature.layer.type == "circle") {
           map.setLayoutProperty('highlighted-feature-circle', 'visibility', 'visible');
@@ -237,7 +237,7 @@ export default Component.extend({
         }
       }
     }
-  }).keepLatest(),
+  }).restartable(),
 
   actions: {
     async handleLayerMouseClick(e) {
@@ -269,6 +269,7 @@ export default Component.extend({
       this.set('mousePosition', e.point);
 
       if (feature) this.get('highlightFeatureTask').perform(e, feature);
+      if (feature) console.log(feature.layer);
     },
 
     handleLayerMouseLeave() {
