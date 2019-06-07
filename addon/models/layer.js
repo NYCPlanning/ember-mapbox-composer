@@ -1,8 +1,8 @@
 import Model from 'ember-data/model';
-import { computed } from '@ember/object';
+import { computed, set } from '@ember/object';
 import { alias } from '@ember/object/computed';
 import { copy } from 'ember-copy';
-import { set } from '@ember/object';
+
 import { assign } from '@ember/polyfills';
 import { next } from '@ember/runloop';
 import DS from 'ember-data';
@@ -38,12 +38,12 @@ export default Model.extend({
 
     if (this.get('layerVisibilityType') === 'singleton') {
       if (this.get('position') === 1 && this.get('layerGroup.visible')) {
-        next(() => this.set('visibility', true));
+        next(() => (!this.get('isDestroyed') ? this.set('visibility', true) : null));
       } else {
-        next(() => this.set('visibility', false));
+        next(() => (!this.get('isDestroyed') ? this.set('visibility', false) : null));
       }
     } else {
-      next(() => this.set('visibility', visible));
+      next(() => (!this.get('isDestroyed') ? this.set('visibility', visible) : null));
     }
   },
 
