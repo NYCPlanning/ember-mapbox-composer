@@ -1,6 +1,6 @@
 {
   "name": "ember-mapbox-composer",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "The default blueprint for ember-cli addons.",
   "keywords": [
     "ember-addon"
@@ -72,7 +72,7 @@
     "mapbox-gl": ">=0.47.0"
   },
   "engines": {
-    "node": "^4.5 || 6.* || >= 7.*"
+    "node": "^12"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
