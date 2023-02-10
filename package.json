@@ -73,7 +73,7 @@
     "mapbox-gl": ">=0.47.0"
   },
   "engines": {
-    "node": "10.* || >= 12"
+    "node": "10.* || 12.* || 14.*"
   },
   "ember": {
     "edition": "octane"
