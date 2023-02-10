@@ -1,9 +1,9 @@
 {{!-- We need to detect layer order so bind event to all mouse interactions--}}
-{{mapbox-gl-on 'mousemove' (action 'handleLayerMouseMove')
+{{mapbox-gl-on "mousemove" (action "handleLayerMouseMove")
   eventSource=map}}
 
-{{!-- Bind layer groups' layers --}}
-{{#each layers key='style' as |layerObject|}}
+{{!-- Bind layer groups" layers --}}
+{{#each layers key="style" as |layerObject|}}
   {{mapbox-gl-layer
     map=map
     layer=layerObject.mapboxGlStyle
@@ -11,12 +11,12 @@
   }}
   {{!-- if the layer is hightlightable or tooltipable, bind events --}}
   {{#if (or layerObject.highlightable layerObject.tooltipable)}}
-    {{mapbox-gl-on 'mouseleave' layerObject.mapboxGlStyle.id (action 'handleLayerMouseLeave')
+    {{mapbox-gl-on "mouseleave" layerObject.mapboxGlStyle.id (action "handleLayerMouseLeave")
       eventSource=map}}
   {{/if}}
 
   {{#if layerObject.clickable}}
-    {{mapbox-gl-on 'click' layerObject.mapboxGlStyle.id (action 'handleLayerMouseClick')
+    {{mapbox-gl-on "click" layerObject.mapboxGlStyle.id (action "handleLayerMouseClick")
       eventSource=map}}
   {{/if}}
 {{/each}}
