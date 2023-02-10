@@ -120,7 +120,8 @@ module('Unit | Service | layer-groups', function(hooks) {
     service.initializeObservers(layerGroups);
     assert.equal(service.get('visibleLayerGroups').length, 2);
 
-    layerGroups.get('firstObject').set('visible', false);
+    await run(() => {layerGroups.get('firstObject').set('visible', false);});
+
     assert.equal(service.get('visibleLayerGroups').length, 1);
   });
 
