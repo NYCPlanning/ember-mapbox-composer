@@ -146,7 +146,7 @@ export default Component.extend({
     return this.get('layers')
       .filterBy('visibility', true)
       .filter(({ highlightable, tooltipable, clickable }) => highlightable || tooltipable || clickable)
-      .mapBy('id');
+      .map(layer => layer.get('id'));
   }),
 
   mousePosition: null,
