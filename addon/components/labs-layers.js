@@ -173,7 +173,8 @@ export default Component.extend({
     // we don't need to union if there is only one
     // we also don't want to slow down machines if there are too many
     if (featureFragments.length === 1 || featureFragments.length > 100) return feature;
-
+    // if the fragments are features of type "Point", return the first one instead of unioning
+    if (featureFragments.length > 0 && featureFragments[0].geometry.type === "Point") return featureFragments[0];
     return featureFragments
       .reduce((acc, curr) => turfUnion(curr, (acc ? acc : curr)));
   },
