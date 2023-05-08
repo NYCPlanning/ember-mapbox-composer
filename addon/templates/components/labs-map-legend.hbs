@@ -1,7 +1,7 @@
 <ul class="legend no-bullet">
   {{#each model.items as |legendItem|}}
     <li class="legend-item">
-      {{component (concat 'labs-map-legend-' legendItem.type)
+      {{component (concat "labs-map-legend-" legendItem.type)
         style=legendItem.style}}
       {{legendItem.label}}
       {{#if legendItem.tooltip}}
